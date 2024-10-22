@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using WebApplication1.ViewModels.ProductViewModel
+@model ProductViewModel
+
+
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm";
+}
+
+<h2>Cập nhật sản phẩm</h2>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Name">Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="CreatedDate">Ngày tạo</label>
+        <input asp-for="CreatedDate" class="form-control" />
+        <span asp-validation-for="CreatedDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ExpDate">Ngày hết hạn</label>
+        <input asp-for="ExpDate" class="form-control" />
+        <span asp-validation-for="ExpDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="CategoryId">Danh mục sản phẩm</label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.options, "Value", "Text"))"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <!-- Hiển thị ảnh hiện có -->
+    <div class="form-group">
+        <label>Ảnh hiện tại</label>
+        <div>
+            @foreach (var image in Model.ExistingImages)
+            {
+                <img src="~/assets/Image/@image" alt="Product Image" style="width: 100px; height: 100px;" />
+                <input type="checkbox" name="DeleteImages" value="@image" /> 
+            }
+        </div>
+    </div>
+
+    <!-- Upload ảnh mới -->
+    <div class="form-group">
+        <label for="FileUpload">Thêm ảnh mới</label>
+        <input asp-for="FileUpload" type="file" class="form-control" />
+        <span asp-validation-for="FileUpload" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

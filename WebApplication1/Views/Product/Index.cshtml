@@ -1,0 +1,115 @@
+﻿@* @using WebApplication1.ViewModels.ProductViewModel
+@model ProductViewModel
+
+<h2>Product List</h2>
+
+<!-- Form để thêm hoặc tìm kiếm sản phẩm theo danh mục -->
+<form method="get" action="">
+    <div class="form-group">
+        <label for="CategoryFilter">Filter by Category</label>
+        <select id="CategoryFilter" name="category" class="form-control">
+            <option value="">-- All Categories --</option>
+            @foreach (var option in Model.options)
+            {
+                <option value="@option.Value">@option.Text</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+<a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Product" asp-action="Create">Thêm tài khoản</a>
+
+<!-- Danh sách các sản phẩm -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ảnh</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Create Date</th>
+            <th>Expire Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td><img /></td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.CreateDate.ToString("dd/MM/yyyy")</td>
+                <td>@product.ExpDate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a class="btn btn-warning" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Chỉnh sửa</a>
+ 
+                    <a href="/Product/Delete/@product.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Nút thêm sản phẩm mới -->
+<a href="/Product/Create" class="btn btn-success">Add New Product</a>
+
+<!-- Form để thêm hoặc tìm kiếm sản phẩm theo danh mục -->
+
+ *@
+
+@using WebApplication1.ViewModels.ProductViewModel
+@using X.PagedList.Mvc.Core
+@model ProductViewModel
+
+
+
+
+<link href="~/css/indexProduct.css" rel="stylesheet" />
+<h2>Product List</h2>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ảnh</th>
+            <th>Description</th>
+            <th>Create Date</th>
+            <th>Expiration Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>
+                    @if (product.ProductImages != null && product.ProductImages.Any())
+                    {
+                        <img src="/assets/Image/@product.ProductImages.First().FileName" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@product.Description</td>
+                <td>@product.CreateDate</td>
+                <td>@product.ExpDate</td>
+                <td>
+                    <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-route-id="@product.Id">Chỉnh sửa</a>
+                    <a class="btn btn-warning" asp-controller="Product" asp-action="UploadPhoto" asp-route-id="@product.Id">Chỉnh sửa hinh anh</a>
+                    <a href="/Product/Delete/@product.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a href="/Product/Create" class="btn btn-success">Add New Product</a>
+<div class="pagination">
+    @Html.PagedListPager(Model.Products, page => Url.Action("Index", new { page }))
+</div>

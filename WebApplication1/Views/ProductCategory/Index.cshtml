@@ -1,0 +1,63 @@
+﻿@using WebApplication1.ViewModels.ProductModels
+@model ProductCategoryViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<h1>Danh Mục Sản Phẩm</h1>
+<form>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Enter name">
+    </div>
+    <button type="submit" class="btn btn-primary m-2">Search</button>
+    <a asp-action="Insert" class="btn btn-success">Insert</a>
+</form>
+<table class="table table-bordered table-hover">
+    <tr class="table-hover">
+        <th>number</th>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+    @if (Model.listCategory != null)
+    {
+        var index = 0;
+        foreach (var item in Model.listCategory)
+        {
+            <tr>
+                <td>@(++index)</td>
+                <td>@item.CategoryName</td>
+                <td>
+                    <a asp-controller="Student" asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-warning" name="id">List Product</a>
+                    <a asp-action="Update" asp-route-id="@item.CategoryId" class="btn btn-primary">Update</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@item.CategoryId">Delete</button>
+
+                    <div class="modal fade" id="delete_@item.CategoryId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to delete @item.CategoryName?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-primary">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No data</td>
+        </tr>
+    }
+</table>

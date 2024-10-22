@@ -1,0 +1,145 @@
+﻿@* @model WebApplication1.ViewModels.EmpoyeeViewModel
+
+<h2>All Employees</h2>
+<form>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Enter  name">
+    </div>
+    <button type="submit" class="btn btn-primary m-2">Search</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role Name</th>
+            <th>Access Type</th>
+            <th>Chức năng</th>
+            <th>Xoá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.employeeViewModels)
+        {
+            <tr>
+                <td>@employee.Username</td>
+                <td>@employee.Email</td>
+                <td>@employee.RoleName</td> 
+                <td>@employee.AccessType</td>
+                <td>
+                    <a class="nav-link text-dark"
+                       asp-controller="Home"
+                       asp-action="UpdateRole"
+                       asp-route-userId="@employee.UserId">Chỉnh sửa</a>
+                </td>
+                <td>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@employee.UserId">Delete</button>
+                    <div class="modal fade" id="delete_@employee.UserId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to delete @employee.Username?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a asp-action="Delete" asp-route-id="@employee.UserId" class="btn btn-primary">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Trở lại</a>
+ *@
+
+                                    @model WebApplication1.ViewModels.EmpoyeeViewModel
+
+<h2>All Employees</h2>
+
+<!-- Form tìm kiếm -->
+<form method="get" asp-action="ShowAllEmp">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Enter name">
+    </div>
+    <button type="submit" class="btn btn-primary m-2">Search</button>
+</form>
+
+<!-- Bảng hiển thị danh sách nhân viên -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role Name</th>
+            <th>Access Type</th>
+            <th>edit</th>
+            <th>editaccount</th>
+            <th>Xoá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.employeeViewModels != null && Model.employeeViewModels.Any())
+        {
+            @foreach (var employee in Model.employeeViewModels)
+            {
+                <tr>
+                    <td>@employee.Username</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.RoleName</td>
+                    <td>@employee.AccessType</td>
+                    <td>
+                        <!-- Link chỉnh sửa vai trò -->
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="UpdateRole" asp-route-userId="@employee.UserId">Chỉnh sửa</a>
+                    </td>
+                    <td>
+                        <!-- Link chỉnh sửa tai khoan va mk -->
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="UpdatePassword" asp-route-userId="@employee.UserId">EditAccount</a>
+                    </td>
+                    <td>
+                        <!-- Nút xóa với modal xác nhận -->
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@employee.UserId">Delete</button>
+
+                        <!-- Modal xác nhận xóa -->
+                        <div class="modal fade" id="delete_@employee.UserId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you want to delete @employee.Username?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a asp-action="Delete" asp-route-id="@employee.UserId" class="btn btn-primary">Yes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">No employees found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Link quay lại trang chính -->
+<a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Trở lại</a>

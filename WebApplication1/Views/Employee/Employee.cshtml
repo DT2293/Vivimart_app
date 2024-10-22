@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Employee";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2>Welcome, @ViewBag.Username!</h2>
+                </div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> @ViewBag.Email</p>
+                    <p><strong>Role:</strong> @ViewBag.RoleName</p>
+                    <p><strong>Access Type:</strong> @ViewBag.AccessType</p>
+
+                    <div class="d-grid gap-2 d-md-block">
+                        <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Employee" asp-action="SalePage">Thêm Hoá đơn</a>
+                        <a class="btn btn-outline-success me-2" asp-area="" asp-controller="Employee" asp-action="ShowAllCus">Danh Sách Khách hàng</a>
+                        <a class="btn btn-outline-danger" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using WebApplication1.ViewModels
+@model InvoiceDetailsViewModel
+
+<h2>Chi Tiết Hóa Đơn</h2>
+<p><strong>UserId:</strong> @Model.UserId</p>
+<p><strong>Ngày Lập:</strong> @Model.DateTimeInvoice.ToString("dd/MM/yyyy HH:mm:ss")</p>
+
+<div class="container">
+    
+    <h4>Khách lẻ</h4> 
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <p>Tổng tiền hàng</p>
+        </div>
+        <div class="col-6 text-end">
+            <p>@Model.GetTotal().ToString("N0") đ</p>
+        </div>
+
+        <div class="col-6">
+            <p>Giảm giá</p>
+        </div>
+        <div class="col-6 text-end">
+            <!--<p>Model.Discount.ToString("N0") đ</p>-->
+            <p>Comming Soon</p>
+        </div>
+
+        <div class="col-6">
+            <p>Khách cần trả</p>
+        </div>
+        <div class="col-6 text-end">
+            <!-- <p class="fw-bold text-primary">Model.AmountToPay.ToString("N0") đ</p>-->
+            <p>@Model.GetTotal().ToString("N0") đ</p>
+        </div>
+
+        <div class="col-6">
+            <p>Khách thanh toán</p>
+        </div>
+        <div class="col-6 text-end">
+            <!--<p>Model.CustomerPaid.ToString("N0") đ</p> -->
+            <p>Comming soon</p>
+        </div>
+    </div>
+
+    <!-- Chọn phương thức thanh toán -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <label>Phương thức thanh toán:</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentMethod" value="Tiền mặt" id="cashRadio">
+            <label class="form-check-label" for="cashRadio">Tiền mặt</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentMethod" value="Thanh toán vnpay" id="vnpayRadio">
+            <label class="form-check-label" for="vnpayRadio">VNPay</label>
+        </div>
+    <form asp-controller="employee" asp-action="CreateInvoice" method="post">
+        <input type="hidden" name="UserId" value="@Model.UserId" />
+        <input type="hidden" name="DateTimeInvoice" value="@Model.DateTimeInvoice" />
+        <input type="hidden" name="Amount" value="@Model.GetTotal()" />
+        <button type="submit" class="btn btn-danger">Xác nhận thanh toán</button>
+    </form>
+</div>
+

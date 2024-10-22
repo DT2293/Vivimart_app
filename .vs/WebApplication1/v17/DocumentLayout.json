@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\controllers\\pdfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\pdfcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\helper\\customerinvoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\helper\\customerinvoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\htmltemplate\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\htmltemplate\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\controllers\\salerecordcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\salerecordcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\controllers\\productcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\controllers\\productcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\viewmodels\\invoicedetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\viewmodels\\invoicedetailsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\services\\productservicefors.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\services\\productservicefors.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|c:\\users\\admin\\desktop\\huetech\\webapplication1\\webapplication1\\services\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{80745813-3740-486D-A133-8572795FF336}|WebApplication1\\WebApplication1.csproj|solutionrelative:webapplication1\\services\\invoiceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PDFController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\PDFController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\PDFController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\PDFController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\PDFController.cs",
+              "ViewState": "AQIAABwAAAAAAAAAAAAYwEkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T07:38:53.579Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\HTMLTemplate\\index.html",
+              "RelativeDocumentMoniker": "WebApplication1\\HTMLTemplate\\index.html",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\HTMLTemplate\\index.html",
+              "RelativeToolTip": "WebApplication1\\HTMLTemplate\\index.html",
+              "ViewState": "AQIAABIAAAAAAAAAAAAmwEEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-10-22T07:56:23.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Program.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Program.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Program.cs",
+              "RelativeToolTip": "WebApplication1\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAABdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T07:57:20.475Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CustomerInvoice.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Helper\\CustomerInvoice.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Helper\\CustomerInvoice.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Helper\\CustomerInvoice.cs",
+              "RelativeToolTip": "WebApplication1\\Helper\\CustomerInvoice.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACQAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:01:39.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "InvoiceService.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Services\\InvoiceService.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Services\\InvoiceService.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Services\\InvoiceService.cs",
+              "RelativeToolTip": "WebApplication1\\Services\\InvoiceService.cs",
+              "ViewState": "AQIAAEEAAAAAAAAAAAAkwEgAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:28:42.64Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ProductServiceForS.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Services\\ProductServiceForS.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Services\\ProductServiceForS.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Services\\ProductServiceForS.cs",
+              "RelativeToolTip": "WebApplication1\\Services\\ProductServiceForS.cs",
+              "ViewState": "AQIAADQAAAAAAAAAAAAkwGMAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:39:08.819Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "InvoiceDetailsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\ViewModels\\InvoiceDetailsViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\ViewModels\\InvoiceDetailsViewModel.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\ViewModels\\InvoiceDetailsViewModel.cs",
+              "RelativeToolTip": "WebApplication1\\ViewModels\\InvoiceDetailsViewModel.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAywBIAAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:46:33.51Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SaleRecordController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\SaleRecordController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\SaleRecordController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\SaleRecordController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\SaleRecordController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:57:37.618Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ProductCategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\ProductCategoryController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\ProductCategoryController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\ProductCategoryController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\ProductCategoryController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:57:43.707Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\ProductController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:57:45.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EmployeeController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\EmployeeController.cs",
+              "RelativeDocumentMoniker": "WebApplication1\\Controllers\\EmployeeController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\Controllers\\EmployeeController.cs",
+              "RelativeToolTip": "WebApplication1\\Controllers\\EmployeeController.cs",
+              "ViewState": "AQIAAH0BAAAAAAAAAAAwwJsBAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-22T08:57:46.125Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

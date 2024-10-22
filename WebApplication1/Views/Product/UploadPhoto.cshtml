@@ -1,0 +1,158 @@
+﻿@using static WebApplication1.Controllers.ProductController
+@model UploadOnfile
+
+@{
+    Product product = ViewData["product"] as Product;
+}
+<link href="~/css/photodetail.css" rel="stylesheet" />
+
+<h1>Upload Photo : @product.Name</h1>
+<form method="POST" enctype="multipart/form-data">
+    <label asp-for="@Model.FileUpload"></label>
+    <input asp-for="@Model.FileUpload" />
+    <span asp-validation-for="@Model.FileUpload"></span>
+    <button class="btn btn-primary" asp-action="UploadPhoto" asp-route-id="@product.Id">Upload</button>
+</form>
+
+<div id="box-photo-upload" class="d-flex flex-wrap photo-upload" data-id="@product.Id">
+
+</div>
+
+@* @section Script {
+    <script>
+        function setClickDeletePhoto() {
+            $("#box-photo-upload .photodetail span").click(function () {
+                var spanButton = $(this);
+                var id = spanButton.data("id");
+
+                var formData = new FormData();
+                formData.append("id", id);
+
+                var urlDeletePhoto = "@Url.Action("DeletePhoto"); // Sửa lại biến cho đúng
+
+                $.ajax({
+                    url: urlDeletePhoto, // Sử dụng đúng biến urlDeletePhoto
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        LoadPhotos(); // Gọi lại hàm LoadPhotos để refresh ảnh sau khi xóa thành công
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error deleting photo:", status, error);
+                    }
+                });
+            });
+        }
+
+
+        function LoadPhotos() {
+            var box = $("#box-photo-upload");
+            var productId = box.data("id");
+            box.empty(); // Xóa các ảnh hiện tại trong box
+
+            var formData = new FormData();
+            formData.append("id", productId);
+
+            var urlListPhoto = "@Url.Action("ListPhotos")";
+
+            $.ajax({
+                url: urlListPhoto,
+                type: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    data.photos.forEach(function (item) {
+                        var photoHtml = `
+                                    <div class="photodetail w-25 p-1">
+                                        <img class="w-100" src="${item.path}" />
+                                        <span class="btn btn-danger" data-id="${item.id}">Delete</span>
+                                    </div>`;
+                        box.append(photoHtml);
+                    });
+                    setClickDeletePhoto();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading photos:", status, error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            LoadPhotos(); // Gọi hàm khi trang được tải
+        });
+    </script>
+}
+ *@
+@section Script {
+    <script>
+        function setClickDeletePhoto() {
+            $("#box-photo-upload .photodetail span").click(function () {
+                var spanButton = $(this);
+                var id = spanButton.data("id");
+
+                var formData = new FormData();
+                formData.append("id", id);
+
+                var urlDeletePhoto = '@Url.Action("DeletePhoto")'; 
+
+                $.ajax({
+                    url: urlDeletePhoto, // Sử dụng đúng biến urlDeletePhoto
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        LoadPhotos(); // Gọi lại hàm LoadPhotos để refresh ảnh sau khi xóa thành công
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error deleting photo:", status, error);
+                    }
+                });
+            });
+        }
+
+        function LoadPhotos() {
+            var box = $("#box-photo-upload");
+            var productId = box.data("id");
+            box.empty(); // Xóa các ảnh hiện tại trong box
+
+            var formData = new FormData();
+            formData.append("id", productId);
+
+            var urlListPhoto = '@Url.Action("ListPhotos")'; 
+
+            $.ajax({
+                url: urlListPhoto,
+                type: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    data.photos.forEach(function (item) {
+                        var photoHtml = `
+                                    <div class="photodetail w-25 p-1">
+                                        <img class="w-100" src="${item.path}" />
+                                        <span class="btn btn-danger" data-id="${item.id}">Delete</span>
+                                    </div>`;
+                        box.append(photoHtml);
+                    });
+                    setClickDeletePhoto(); // Thiết lập sự kiện xóa cho ảnh sau khi tải lại danh sách
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading photos:", status, error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            LoadPhotos(); // Gọi hàm khi trang được tải
+        });
+    </script>
+}

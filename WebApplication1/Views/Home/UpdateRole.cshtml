@@ -1,0 +1,89 @@
+﻿@model WebApplication1.ViewModels.UpdateUserRoleViewModel
+
+@* <form asp-action="UpdateRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        <label for="newRoleId">Select New Role:</label>
+        @foreach(var i in Model.CurrentRole){
+        <label>
+        <select asp-for="NewRoleId" asp-items="@(new SelectList(Model.AvailableRoles, "RoleId", "RoleName"))">
+                    <option value="">Current Role: @i</option>
+            </select>     
+        </label>
+        }
+    </div>
+    <div>
+       
+        
+    </div>
+    <button type="submit">Update Role</button>
+</form>
+ *@
+<@* h2>Update User Role, Email, and Password</h2>
+
+<form asp-action="UpdateRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        <label>Username:</label>
+        <input asp-for="Username" readonly />
+    </div>
+    <div>
+        <label for="Email">Email:</label>
+        <input asp-for="NewEmail" placeholder="Enter new email (optional)" />
+        <span asp-validation-for="NewEmail" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="Password">New Password:</label>
+        <input asp-for="NewPassword" type="password" placeholder="Enter new password (optional)" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+    @foreach (var i in Model.CurrentRole)
+    {
+        <label>
+            <select asp-for="NewRoleId" asp-items="@(new SelectList(Model.AvailableRoles, "RoleId", "RoleName"))">
+                <option value="">Current Role: @i</option>
+            </select>
+        </label>
+    }
+    <button type="submit">Update User</button>
+</form>
+
+<!-- Validation Summary -->
+<div asp-validation-summary="All" class="text-danger"></div> *@
+
+
+ <h2>Update User Role, Email, and Password</h2>
+
+<form asp-action="UpdateRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div>
+        <label>Username:</label>
+        <input asp-for="Username" readonly class="form-control" />
+    </div>
+
+    <div>
+        <label for="NewEmail">New Email:</label>
+        <input type="email" asp-for="NewEmail" class="form-control" placeholder="Enter new email (optional)" required/>
+        <span asp-validation-for="NewEmail" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="NewPassword">New Password:</label>
+        <input asp-for="NewPassword" class="form-control" type="password" placeholder="Enter new password (optional)" />
+        <span asp-validation-for="NewPassword" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="NewRoleId">Select New Role:</label>
+        
+        <select asp-for="NewRoleId" class="form-control" asp-items="@(new SelectList(Model.AvailableRoles, "RoleId", "RoleName"))">
+        </select>
+        <span asp-validation-for="NewRoleId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Update User</button>
+</form>
+
+<div asp-validation-summary="All" class="text-danger mt-3"></div>
