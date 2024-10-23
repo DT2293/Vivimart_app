@@ -368,8 +368,9 @@ namespace WebApplication1.Controllers
 
 				// Thông báo thành công
 				TempData["Message"] = "Thanh toán VNPay thành công";
-				return RedirectToAction("PaymentSuccess");
-			}
+				return RedirectToAction("InvoiceDetails", new { id = invoice.InvoiceId });
+
+            }
 			catch (Exception ex)
 			{
 				// Rollback giao dịch nếu có lỗi xảy ra

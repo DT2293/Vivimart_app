@@ -111,7 +111,33 @@ namespace WebApplication1.Services
 
             return viewModel;
         }
+        public async Task<Invoice> CreateInvoiceAsync(InvoiceDetailsViewModel model, List<CartItem> cartItems)
+        {
+            var invoice = new Invoice
+            {
+                UserId = model.UserId,
+                DateTimeInvoice = DateTime.Now,
+
+                InvoiceDetails = new List<InvoiceDetail>()
+            };
+
+            foreach (var item in cartItems)
+            {
+                invoice.InvoiceDetails.Add(new InvoiceDetail
+                {
+                    ProductId = item.product.Id,
+                    Quantity = item.quantity,
+                    Total = item.quantity * item.product.Price
+                });
+            }
+
+            _db.Invoices.Add(invoice);
+            await _db.SaveChangesAsync();
+
+            return invoice; // Trả về hóa đơn đã tạo
+        }
     }
+}
 
     //public int saveInvoice(List<CartItem> cartItems, Invoice invoice)
     //{
@@ -137,6 +163,5 @@ namespace WebApplication1.Services
     //}
 
 
-}
 
 

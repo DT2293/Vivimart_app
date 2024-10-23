@@ -1,73 +1,181 @@
-﻿using DinkToPdf;
+﻿//using DinkToPdf;
+//using DinkToPdf.Contracts;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Mvc.Rendering;
+//using Microsoft.AspNetCore.Mvc.ViewEngines;
+//using Microsoft.AspNetCore.Mvc.ViewFeatures;
+//using Microsoft.EntityFrameworkCore;
+//using WebApplication1.Models;
+//using WebApplication1.ViewModels;
+
+//public class PDFController : Controller
+//{
+//    private readonly IConverter _converter;
+//    private readonly AuthContext _db;
+//    public PDFController(IConverter converter, AuthContext db)
+//    {
+//        _converter = converter;
+//        _db = db;
+//    }
+
+//    [HttpGet]
+//    public IActionResult ExportInvoicePdf(int id)
+//    {
+//        var invoice = _db.Invoices.Include(i => i.InvoiceDetails)
+//                 .ThenInclude(d => d.Product)
+//                 .FirstOrDefault(i => i.InvoiceId == id);
+
+//        if (invoice == null)
+//        {
+//            return NotFound();
+//        }
+
+//        // Ánh xạ từ Invoice sang InvoiceDetailsViewModel
+//        var invoiceDetailsViewModel = new InvoiceDetailsViewModel
+//        {
+//            InvoiceId = invoice.InvoiceId,
+//            UserId = invoice.UserId,
+//            DateTimeInvoice = invoice.DateTimeInvoice,
+//            Items = invoice.InvoiceDetails.Select(detail => new CartItemViewModel // Sử dụng CartItemViewModel
+//            {
+//                Name = detail.Product.Name,
+//                Price = detail.Product.Price,
+//                Quantity = detail.Quantity,
+//            }).ToList(),
+//        };
+
+//        // Tính tổng số tiền
+//        var Totalamount = invoice.InvoiceDetails.Sum(d => d.Quantity * d.Product.Price);
+//        // Tạo nội dung HTML từ view hoặc từ chuỗi HTML trực tiếp
+//        var htmlContent = RenderViewToString("InvoiceDetails", invoiceDetailsViewModel);
+
+//        // Tạo PDF từ HTML
+//        var pdf = new HtmlToPdfDocument()
+//        {
+//            GlobalSettings = {
+//                PaperSize = PaperKind.A4,
+//                Orientation = Orientation.Portrait,
+//            },
+//            Objects = {
+//                new ObjectSettings() {
+//                    HtmlContent = htmlContent
+//                }
+//            }
+//        };
+
+//        var pdfFile = _converter.Convert(pdf);
+//        return File(pdfFile, "application/pdf", "invoice.pdf");
+//    }
+
+//    private string RenderViewToString(string viewName, object model)
+//    {
+//        ViewData.Model = model;
+//        using (var sw = new StringWriter())
+//        {
+//            var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+//            var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw, new HtmlHelperOptions());
+//            viewResult.View.RenderAsync(viewContext);
+//            return sw.GetStringBuilder().ToString();
+//        }
+//    }
+//}
+using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Helper;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
-using System.IO;
-using System.Threading.Tasks;
-using WebApplication1.Services;
+using WebApplication1.ViewModels;
 
-namespace WebApplication1.Controllers
+public class PDFController : Controller
 {
-    public class PDFController : Controller
+    private readonly IConverter _converter;
+    private readonly AuthContext _db;
+    private readonly IRazorViewEngine _viewEngine;
+    private readonly ITempDataProvider _tempDataProvider;
+    private readonly IServiceProvider _serviceProvider;
+
+    public PDFController(IConverter converter, AuthContext db, IRazorViewEngine viewEngine, ITempDataProvider tempDataProvider, IServiceProvider serviceProvider)
     {
-        private readonly IConverter _converter;
-        private readonly ProductServiceForS _productServiceForS;
+        _converter = converter;
+        _db = db;
+        _viewEngine = viewEngine;
+        _tempDataProvider = tempDataProvider;
+        _serviceProvider = serviceProvider;
+    }
 
-        // Inject IConverter dependency via constructor
-        public PDFController(IConverter converter,ProductServiceForS productServiceForS)
+    [HttpGet]
+    public IActionResult ExportInvoicePdf(int id)
+    {
+        var invoice = _db.Invoices.Include(i => i.InvoiceDetails)
+            .ThenInclude(d => d.Product)
+            .FirstOrDefault(i => i.InvoiceId == id);
+
+        if (invoice == null)
         {
-            _converter = converter;
-
+            return NotFound();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GeneratePdf()
+        var invoiceDetailsViewModel = new InvoiceDetailsViewModel
         {
-            // Đường dẫn lưu file PDF sau khi tạo
-            string filename = "Invoice.pdf";
-            string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "Exports", filename);
-
-            // Cài đặt chung cho tài liệu PDF
-            var globalSettings = new GlobalSettings
+            InvoiceId = invoice.InvoiceId,
+            UserId = invoice.UserId,
+            DateTimeInvoice = invoice.DateTimeInvoice,
+            Items = invoice.InvoiceDetails.Select(detail => new CartItemViewModel
             {
-                ColorMode = ColorMode.Color,
-                Orientation = Orientation.Portrait,
+                Name = detail.Product.Name,
+                Price = detail.Product.Price,
+                Quantity = detail.Quantity,
+            }).ToList(),
+        };
+
+        var htmlContent = RenderViewToString("InvoiceDetails", invoiceDetailsViewModel);
+
+        var pdf = new HtmlToPdfDocument()
+        {
+            GlobalSettings = {
                 PaperSize = PaperKind.A4,
-                Margins = new MarginSettings { Top = 10, Bottom = 10 },
-                DocumentTitle = "Invoice",
-                Out = outputPath // Lưu file PDF vào thư mục Exports
-            };
+                Orientation = Orientation.Portrait,
+            },
+            Objects = {
+                new ObjectSettings() {
+                    HtmlContent = htmlContent,
+                    WebSettings = { DefaultEncoding = "utf-8" },
+                   //Stylesheets = { "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" }
+                }
+            }
+        };
 
-            // Cài đặt riêng cho nội dung PDF
-            var objectSettings = new ObjectSettings
+        var pdfFile = _converter.Convert(pdf);
+        return File(pdfFile, "application/pdf", "invoice.pdf");
+    }
+
+    private string RenderViewToString(string viewName, object model)
+    {
+        ViewData.Model = model;
+        using (var sw = new StringWriter())
+        {
+            var viewResult = _viewEngine.FindView(ControllerContext, viewName, false);
+
+            if (!viewResult.Success)
             {
-                PagesCount = true,
-   //             HtmlContent = CustomerInvoice.ToHtmlFile(InvoiceDetail.getdata()), // Nội dung HTML chuyển đổi từ dữ liệu
-                WebSettings = { DefaultEncoding = "utf-8" }, // Cài đặt encoding
-                HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Page [page] of [toPage]" },
-                FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "This is a footer." }
-            };
-
-            // Tạo tài liệu HTML to PDF
-            var pdf = new HtmlToPdfDocument
-            {
-                GlobalSettings = globalSettings,
-                Objects = { objectSettings }
-            };
-
-            // Chuyển đổi nội dung sang PDF
-            _converter.Convert(pdf);
-
-            // Kiểm tra xem file PDF đã tồn tại và trả về để tải xuống
-            if (System.IO.File.Exists(outputPath))
-            {
-                byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outputPath);
-                return File(fileBytes, "application/pdf", filename);
+                throw new InvalidOperationException($"Could not find view: {viewName}");
             }
 
-            // Trường hợp file không được tạo ra
-            return NotFound();
+            var viewContext = new ViewContext(
+                ControllerContext,
+                viewResult.View,
+                ViewData,
+                TempData,
+                sw,
+                new HtmlHelperOptions()
+            );
+
+            viewResult.View.RenderAsync(viewContext).Wait();
+            return sw.GetStringBuilder().ToString();
         }
     }
 }

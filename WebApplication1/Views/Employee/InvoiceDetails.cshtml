@@ -1,39 +1,73 @@
 ﻿@model WebApplication1.ViewModels.InvoiceDetailsViewModel
 
-<h2>Tạo Hóa Đơn</h2>
+<div id="print">
+    <h2>Tạo Hóa Đơn</h2>
 
-@if (Model.Items.Any())
-{
-    <form asp-action="CreateInvoice" method="post">
-        <h3>Chi Tiết Hóa Đơn</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Giá</th>
-                    <th>Số Lượng</th>
-                    <th>Tổng</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
+    @if (Model.Items.Any())
+    {
+        <form asp-action="CreateInvoice" method="post">
+            <div class="text-center my-4">
+                <h3>Hoá đơn bán hàng</h3>
+                <h4>Mã hoá đơn: @Model.InvoiceId</h4>
+                <h4>Ngày: @Model.DateTimeInvoice.ToString("dd/MM/yyyy")</h4>
+                <h4>Vivi Mart</h4>
+            </div>
+
+            <div class="mb-4">
+                <h5>Khách hàng: Khách lẻ</h5>
+                <h5>SDT:..........</h5>
+                <h5>Địa chỉ:............</h5>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead class="table-light">
                     <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Price.ToString("C")</td>
-                        <td>@item.Quantity</td>
-                        <td>@(item.Price * item.Quantity).ToString("C")</td>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Price.ToString("N0") VND</td>
+                            <td>@item.Quantity</td>
+                            <td>@((item.Price * item.Quantity).ToString("N0"))VND</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="text-end mt-4">
+                <h4>Tổng tiền: @Model.Items.Sum(i => i.Price * i.Quantity).ToString("N0") VND</h4>
+            </div>
 
-        <h3>Tổng: @Model.GetTotal().ToString("C")</h3>
+            <button onclick="print()">In Hoá đơn</button>
+            <a class="btn btn-outline-success me-2" asp-controller="PDF" asp-action="ExportInvoicePdf" asp-route-id="@Model.InvoiceId">Show PDF</a>
 
-        <button type="submit">Tạo Hóa Đơn</button>
-    </form>
-}
-else
-{
-    <p>Giỏ hàng của bạn trống!</p>
-}
+        </form>
+    }
+    else
+    {
+        <p>Giỏ hàng của bạn trống!</p>
+    }
+    
+</div>
+<script>
+    function print() {
+        //var divToPrint = document.getElementById("print").innerHTML;
+        var divToPrint = $("#print").html();
+        var newWin = window.open('', '', 'width=793');
+        newWin.document.write(divToPrint);
+        newWin.document.close();
+
+        // Chờ tài liệu tải xong rồi mới gọi in
+        newWin.onload = function () {
+            newWin.focus();
+            newWin.print();
+        };
+        setTimeout(function () { newWin.close(); }, 5000);
+    }
+</script>
