@@ -1,10 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
 }
-@using WebApplication1.ViewModels.ProductViewModel
-@model ProductViewModel
+
+@model WebApplication1.ViewModels.ProductViewModel
 
 
 @{
@@ -14,6 +12,7 @@
 <h2>Cập nhật sản phẩm</h2>
 
 <form asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label for="Name">Tên sản phẩm</label>
         <input asp-for="Name" class="form-control" />
@@ -24,6 +23,12 @@
         <label for="Description">Mô tả</label>
         <textarea asp-for="Description" class="form-control"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="Price">Price</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -39,6 +44,12 @@
     </div>
 
     <div class="form-group">
+        <label for="SupplierID">Danh Sách Nhà Cung Cấp</label>
+        <select asp-for="SupplierID" class="form-control" asp-items="@(new SelectList(Model.Suppliers, "Value", "Text"))"></select>
+        <span asp-validation-for="SupplierID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
         <label for="CategoryId">Danh mục sản phẩm</label>
         <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.options, "Value", "Text"))"></select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -51,7 +62,7 @@
             @foreach (var image in Model.ExistingImages)
             {
                 <img src="~/assets/Image/@image" alt="Product Image" style="width: 100px; height: 100px;" />
-                <input type="checkbox" name="DeleteImages" value="@image" /> 
+                <input type="checkbox" name="DeleteImages" value="@image" />
             }
         </div>
     </div>
@@ -67,5 +78,7 @@
 </form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

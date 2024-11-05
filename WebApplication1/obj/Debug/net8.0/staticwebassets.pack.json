@@ -61,6 +61,10 @@
       "PackagePath": "staticwebassets\\assets\\Image\\kbk0rmnr.png"
     },
     {
+      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\meXuongThienHuong.png",
+      "PackagePath": "staticwebassets\\assets\\Image\\meXuongThienHuong.png"
+    },
+    {
       "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\np1umkva.png",
       "PackagePath": "staticwebassets\\assets\\Image\\np1umkva.png"
     },
@@ -109,6 +113,10 @@
       "PackagePath": "staticwebassets\\assets\\Image\\suavinamilk.png"
     },
     {
+      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\uhsgwhvv.png",
+      "PackagePath": "staticwebassets\\assets\\Image\\uhsgwhvv.png"
+    },
+    {
       "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\usblhar1.png",
       "PackagePath": "staticwebassets\\assets\\Image\\usblhar1.png"
     },
@@ -117,8 +125,16 @@
       "PackagePath": "staticwebassets\\assets\\Image\\w1mbqazu.png"
     },
     {
-      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\css\\indexProduct.css",
-      "PackagePath": "staticwebassets\\css\\indexProduct.css"
+      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\xncxgcrp.jpg",
+      "PackagePath": "staticwebassets\\assets\\Image\\xncxgcrp.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\assets\\Image\\zbsx5se4.jpg",
+      "PackagePath": "staticwebassets\\assets\\Image\\zbsx5se4.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\css\\pagelist.css",
+      "PackagePath": "staticwebassets\\css\\pagelist.css"
     },
     {
       "Id": "C:\\Users\\Admin\\Desktop\\huetech\\WebApplication1\\WebApplication1\\wwwroot\\css\\photodetail.css",

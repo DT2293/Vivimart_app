@@ -1,0 +1,95 @@
+﻿ @model WebApplication1.ViewModels.SupplierViewModel
+
+@{
+    ViewData["Title"] = "Create Suppliers";
+}
+<h2 class="text-center mb-4">Insert Supplier</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="InsertSupplier" method="post">
+            <div class="mb-3">
+                <label asp-for="suppliers.SupplierName" class="form-label"></label>
+                <input asp-for="suppliers.SupplierName" class="form-control" required />
+                <span asp-validation-for="suppliers.SupplierName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="suppliers.ContactName" class="form-label"></label>
+                <input asp-for="suppliers.ContactName" class="form-control" required />
+                <span asp-validation-for="suppliers.ContactName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="suppliers.Address" class="form-label"></label>
+                <input asp-for="suppliers.Address" class="form-control" required />
+                <span asp-validation-for="suppliers.Address" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="suppliers.Phone" class="form-label"></label>
+                <input asp-for="suppliers.Phone" type="text" class="form-control" required />
+                <span asp-validation-for="suppliers.Phone" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="suppliers.Email" class="form-label"></label>
+                <input asp-for="suppliers.Email" type="email" class="form-control" required />
+                <span asp-validation-for="suppliers.Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="suppliers.Fax" class="form-label"></label>
+                <input asp-for="suppliers.Fax" type="text" class="form-control" required />
+                <span asp-validation-for="suppliers.Fax" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+@* @model WebApplication1.Models.Suppliers
+
+<html lang="vi">
+
+<form asp-action="InsertSupplier" method="post">
+    <div class="form-group">
+        <label asp-for="SupplierName"></label>
+        <input asp-for="SupplierName" class="form-control" required />
+        <span asp-validation-for="SupplierName" class="text-danger" ></span> 
+    </div>
+    <div class="form-group">
+        <label asp-for="ContactName"></label>
+        <input asp-for="ContactName" class="form-control" required />
+        <span asp-validation-for="ContactName" class="text-danger"></span> 
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" required/>
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" required />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Fax"></label>
+        <input asp-for="Fax" class="form-control" required />
+        <span asp-validation-for="Fax" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm nhà cung cấp</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+ *@

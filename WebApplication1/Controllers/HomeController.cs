@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,14 @@ namespace WebApplication1.Controllers
         private readonly AuthContext _db;
         private readonly SystemService _systemService;
         private readonly CustomPasswordHasher _customPasswordHasher;
-        public HomeController(AuthContext db, ILogger<HomeController> logger, SystemService systemService, CustomPasswordHasher customPasswordHasher)
+        private readonly ProductServiceForS _productServiceForS;
+        public HomeController(AuthContext db, ILogger<HomeController> logger, SystemService systemService, CustomPasswordHasher customPasswordHasher, ProductServiceForS productServiceForS)
         {
             _db = db;
             _logger = logger;
             _systemService = systemService;
             _customPasswordHasher = customPasswordHasher;
+            _productServiceForS = productServiceForS;
         }
         public async Task<IActionResult> Index()
         {
@@ -68,7 +71,7 @@ namespace WebApplication1.Controllers
             return View("Index");
         }
 
-        [HttpGet]
+            [HttpGet]
         public IActionResult CreateUser()
         {
             var viewModel = new CreateUserViewModel
@@ -77,32 +80,51 @@ namespace WebApplication1.Controllers
                 Roles = _systemService.GetRoles()
             };
 
-            return View(viewModel);
+            return PartialView("_CreateUser", viewModel);
         }
-
         [HttpPost]
-        public IActionResult CreateUser(CreateUserViewModel model)
+        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
             var kt = _systemService.AddUserWithRoleAsync(model.User.Username, model.User.Password, model.User.Email, model.SelectedRole);
             if (kt == 0)
             {
-
-                return RedirectToAction("Index");
-
+                return Json(new { success = true });
             }
             else if (kt == 2)
             {
-                model.Error.Add("tai khoan da ton tai");
-                model.Roles = _systemService.GetRoles();
-                return View(model);
+                model.Error.Add("Tài khoản đã tồn tại");
+                return Json(new { success = false, errors = model.Error });
             }
             else
             {
-                model.Roles = _systemService.GetRoles();
-                model.Error.Add("mat khau chua du 8 ky tu");
-                return View(model);
+                model.Error.Add("Mật khẩu chưa đủ 8 ký tự");
+                return Json(new { success = false, errors = model.Error });
             }
         }
+
+        //[HttpPost]
+        //public IActionResult CreateUser(CreateUserViewModel model)
+        //{
+        //    var kt = _systemService.AddUserWithRoleAsync(model.User.Username, model.User.Password, model.User.Email, model.SelectedRole);
+        //    if (kt == 0)
+        //    {
+
+        //        return RedirectToAction("Index");
+
+        //    }
+        //    else if (kt == 2)
+        //    {
+        //        model.Error.Add("tai khoan da ton tai");
+        //        model.Roles = _systemService.GetRoles();
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        model.Roles = _systemService.GetRoles();
+        //        model.Error.Add("mat khau chua du 8 ky tu");
+        //        return View(model);
+        //    }
+        //}
 
         [HttpGet]     
         public IActionResult ShowAllEmp(EmpoyeeViewModel data)
@@ -117,47 +139,65 @@ namespace WebApplication1.Controllers
                 data.employeeViewModels = _systemService.GetAllEmp();
             }
 
-            return View(data);
+            return PartialView(data);
         }
 
 
         [HttpGet]
         public IActionResult UpdateRole(int userId)
         {
+            // Tìm người dùng theo UserId
             var user = _db.Users.FirstOrDefault(u => u.UserId == userId);
-            List<string> currentRole = _db.UserRoles.Where(ur => ur.UserId == userId).Select(x => x.RoleId.ToString()).ToList();
+
+            // Nếu không tìm thấy người dùng, trả về NotFound
             if (user == null)
             {
                 return NotFound();
             }
 
+            // Lấy danh sách vai trò hiện tại của người dùng
+            List<string> currentRole = _db.UserRoles
+                .Where(ur => ur.UserId == userId)
+                .Select(x => x.RoleId.ToString())
+                .ToList();
+
+            // Khởi tạo model cho PartialView
             var model = new UpdateUserRoleViewModel
             {
-
                 UserId = user.UserId,
                 Username = user.Username,
                 CurrentRole = currentRole,
                 NewEmail = user.Email,
-                NewRoleId = currentRole[0],
+                NewRoleId = currentRole.FirstOrDefault(), // Chọn vai trò đầu tiên
                 AvailableRoles = _db.Roles.ToList()
             };
 
-            return View(model);
+            return PartialView(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateRole(int userId, int newRoleId, string newEmail, string newPassword)
         {
+            // Kiểm tra model state
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, errors = ModelState.SelectMany(x => x.Value.Errors).Select(e => e.ErrorMessage) });
+            }
+
+            // Cập nhật vai trò người dùng
             bool isUpdated = await _systemService.UpdateUserRoleAsync(userId, newRoleId, newEmail, newPassword);
 
             if (isUpdated)
             {
-                return RedirectToAction("ShowAllEmp");
+                return Json(new { success = true });
             }
-
-            ModelState.AddModelError("", "Cập nhật vai trò không thành công.");
-            return View();
+            else
+            {
+                ModelState.AddModelError("", "Cập nhật vai trò không thành công.");
+                return Json(new { success = false, errors = ModelState.SelectMany(x => x.Value.Errors).Select(e => e.ErrorMessage) });
+            }
         }
+
         [HttpGet]
         public IActionResult UpdatePassword(int userId)
         {
@@ -193,6 +233,172 @@ namespace WebApplication1.Controllers
 
         }
 
+        [HttpGet]
+        public IActionResult Applydiscount(int Id) // Sử dụng Id được truyền vào
+        {
+            // Tạo model với thông tin sản phẩm cần giảm giá
+            var product = _productServiceForS.GetProductById(Id); // Sử dụng Id để lấy sản phẩm
+
+            // Kiểm tra xem sản phẩm có tồn tại không
+            if (product == null)
+            {
+                return NotFound(); // Nếu không tìm thấy, trả về NotFound
+            }
+
+            // Tạo model với thông tin sản phẩm cần giảm giá
+            var model = new ProductViewModel
+            {
+                Id = product.Id, // Thêm Id vào model để sử dụng trong form
+                ExpDate = product.ExpDate,
+                Name = product.Name,
+                Description = product.Description,
+                DiscountPercentage = 0, // Khởi tạo giá trị mặc định cho tỷ lệ giảm giá
+                DiscountStartDate = DateTime.Now, // Ngày bắt đầu mặc định là hôm nay
+                DiscountEndDate = DateTime.Now.AddDays(7) // Ngày kết thúc mặc định là 7 ngày sau
+            };
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public IActionResult Applydiscount(ProductViewModel model)
+        {
+            // Kiểm tra xem model có hợp lệ không
+            if (ModelState.IsValid)
+            {
+                return PartialView(model); // Trả lại PartialView với thông tin đã nhập
+            }
+
+            // Lấy thông tin sản phẩm từ dịch vụ
+            var product = _productServiceForS.GetProductById(model.Id);
+
+            // Kiểm tra xem sản phẩm có tồn tại không
+            if (product == null)
+            {
+                return NotFound(); // Nếu không tìm thấy, trả về NotFound
+            }
+
+            // Kiểm tra ngày bắt đầu và ngày kết thúc
+            if (model.DiscountStartDate >= model.DiscountEndDate)
+            {
+                ModelState.AddModelError("", "Ngày bắt đầu phải trước ngày kết thúc.");
+                return PartialView(model);
+            }
+
+            // Cập nhật thông tin giảm giá
+            product.DiscountPercentage = model.DiscountPercentage; // Cập nhật tỷ lệ giảm giá
+            product.DiscountStartDate = model.DiscountStartDate; // Cập nhật ngày bắt đầu
+            product.DiscountEndDate = model.DiscountEndDate; // Cập nhật ngày kết thúc
+
+            // Cập nhật sản phẩm trong cơ sở dữ liệu
+            _productServiceForS.UpdateProduct(product); // Đảm bảo bạn đã có phương thức này trong service
+
+            // Trả về một thông báo thành công hoặc cập nhật lại danh sách sản phẩm
+            return View("ProductsExpiringSoon"); // Trả về một partial view thông báo thành công
+        }
+        // Controller action
+        public IActionResult ProductsExpiringSoon()
+        {
+            try
+            {
+                int daysUntilExpiry = 30;
+                var products = _productServiceForS.GetProductsExpiringSoon(daysUntilExpiry);
+
+                if (products == null || !products.Any())
+                {
+                    ViewData["Message"] = "Không có sản phẩm nào sắp hết hạn.";
+                    return View("NoProducts");
+                }
+
+                var productViewModels = products.Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    ExpDate = p.ExpDate,
+                    Price = p.Price,
+                    DiscountPercentage = p.DiscountPercentage
+                }).ToList();
+
+                return View(productViewModels);
+            }
+            catch (Exception ex)
+            {
+                ViewData["Message"] = "Đã xảy ra lỗi khi tải danh sách sản phẩm.";
+                return View("NoProducts");
+            }
+        }
+
+
+        //public IActionResult ProductsExpiringSoon()
+
+        //{
+        //    try
+        //    {
+        //        int daysUntilExpiry = 30; // Cấu hình số ngày sắp hết hạn
+        //        var products = _productServiceForS.GetProductsExpiringSoon(daysUntilExpiry);
+
+        //        // Debug: Kiểm tra danh sách sản phẩm
+        //        if (products == null || !products.Any())
+        //        {
+        //            // Trả về một view thông báo không có sản phẩm
+        //            return View("NoProducts");
+        //        }
+        //       var productViewModels = products.Select(p => new ProductViewModel
+        //    {
+        //        Id = p.Id,
+        //        Name = p.Name,
+        //        Description = p.Description,
+        //        ExpDate = p.ExpDate,
+        //        Price = p.Price,
+        //        DiscountPercentage = p.DiscountPercentage
+        //    }).ToList();
+
+        //    return View(productViewModels);
+        //    }
+        //    catch (Exception ex) 
+        //    {  return View("NoProducts");
+        //    }
+
+        //}
+        //public IActionResult ProductsExpiringSoon()
+        //{
+        //    var products = _productServiceForS.GetProductsExpiringSoon(); // Lấy danh sách sản phẩm
+        //    if (products == null || !products.Any())
+        //    {
+        //        return View(new List<ProductViewModel>()); // Trả về danh sách rỗng nếu không có sản phẩm
+        //    }
+
+        //    var productViewModels = products.Select(p => new ProductViewModel
+        //    {
+        //        Id = p.Id,
+        //        Name = p.Name,
+        //        Description = p.Description,
+        //        ExpDate = p.ExpDate,
+        //        Price = p.Price,
+        //        DiscountPercentage = p.DiscountPercentage
+        //    }).ToList();
+
+        //    return View(productViewModels);
+        //}
+
+
+        //public IActionResult ProductsExpiringSoon()
+        //{
+        //    int daysUntilExpiry = 30; // Cấu hình số ngày sắp hết hạn
+        //    var products = _productServiceForS.GetProductsExpiringSoon(daysUntilExpiry);
+
+        //    // Chuyển đổi từ Product sang ProductViewModel
+        //    var productViewModels = products.Select(p => new ProductViewModel
+        //    {
+        //        SupplierID = p.SupplierId,
+        //        ExpDate = p.ExpDate,
+        //        Name = p.Name,
+        //        Description = p.Description
+        //    }).ToList();
+
+        //    return View(productViewModels);
+        //}
 
 
 

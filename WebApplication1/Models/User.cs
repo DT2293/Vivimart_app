@@ -26,4 +26,6 @@ public partial class User
 
     // Quan hệ giữa User và Invoice (một-nhiều)
     public virtual ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+
+    public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 }

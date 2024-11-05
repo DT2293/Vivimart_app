@@ -1,8 +1,11 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Drawing;
+using System.Globalization;
 using WebApplication1.Models;
 using WebApplication1.Services;
 using WebApplication1.Services.Account;
@@ -10,6 +13,8 @@ using WebApplication1.Services.SystemService;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 string strcnn = builder.Configuration.GetConnectionString("cnn");
 builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer(strcnn));
@@ -23,6 +28,8 @@ builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<UploadService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<RevenueStatisticsService>();
+builder.Services.AddScoped<SupplierService>();
+builder.Services.AddTransient<EmailService>();  
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 
@@ -52,9 +59,22 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddHttpContextAccessor(); // Thêm dòng này
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("vi-VN"),
+        new CultureInfo("en-US"),
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("vi-VN");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 var app = builder.Build();
-
+app.UseRequestLocalization();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

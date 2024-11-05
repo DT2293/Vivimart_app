@@ -1,6 +1,7 @@
 ﻿@model WebApplication1.ViewModels.InvoiceDetailsViewModel
 
-<meta charset="utf-8"/>
+
+<meta charset="utf-8" />
 <div class="text-center">
     <h3>Hoá đơn bán hàng</h3>
     <h4>Mã hoá đơn: @Model.InvoiceId</h4>
@@ -40,3 +41,4 @@
     <h4>Tổng tiền: @Model.Items.Sum(i => i.Price * i.Quantity).ToString("N0") VND</h4>
 </div>
 <a class="btn btn-outline-success me-2" asp-controller="PDF" asp-action="ExportInvoicePdf" asp-route-id="@Model.InvoiceId">Show PDF</a>
+

@@ -14,14 +14,13 @@ namespace WebApplication1.Services
         {
             _db = db;
         }
-        public Product GetProductById(int id)
+        public Product GetProductById(int Id)
         {
-            return _db.Products
-                      .Include(p => p.ProductImages)
-                      .FirstOrDefault(p => p.Id == id);
+            return _db.Products.FirstOrDefault(p => p.Id == Id);
         }
 
-        public IPagedList<Product> ListProduct(int? categoryId, int page = 1, int pageSize = 10)
+
+        public IPagedList<Product> ListProduct(int? categoryId, int page = 1, int pageSize = 100)
         {
             var query = _db.Products.AsQueryable();
 
@@ -59,18 +58,15 @@ namespace WebApplication1.Services
         }
         public async Task<InvoiceDetailsViewModel> GetInvoiceDetailsAsync(int invoiceId, int userId)
         {
-            // Tạo đối tượng view model
+            
             var viewModel = new InvoiceDetailsViewModel
             {
                 UserId = userId,
                 InvoiceId = invoiceId,
-                DateTimeInvoice = DateTime.Now // Hoặc lấy ngày từ Invoice nếu có
+                DateTimeInvoice = DateTime.Now 
             };
-
-            // Lấy thông tin hóa đơn
             viewModel.Invoice = await _db.Invoices.FindAsync(invoiceId);
 
-            // Lấy chi tiết hóa đơn
             var invoiceDetails = await (from id in _db.InvoiceDetails
                                         join p in _db.Products on id.ProductId equals p.Id
                                         where id.InvoiceId == invoiceId
@@ -80,12 +76,8 @@ namespace WebApplication1.Services
                                             Price = p.Price,
                                             Quantity = id.Quantity
                                         }).ToListAsync();
-
-            // Gán danh sách sản phẩm vào view model
             viewModel.Items = invoiceDetails;
 
-            // Lấy các sản phẩm trong giỏ hàng nếu cần
-            // (Có thể tùy chỉnh theo logic của bạn)
             viewModel.CartItems = invoiceDetails.Select(item => new CartItem
             {
                 product = new Product
@@ -97,6 +89,39 @@ namespace WebApplication1.Services
             }).ToList();
 
             return viewModel;
+        }
+
+        public List<Product> GetProductsExpiringSoon(int daysUntilExpiry)
+        {
+            return _db.Products
+                .Where(p => EF.Functions.DateDiffDay(DateTime.Now, p.ExpDate) <= daysUntilExpiry
+                            && p.ExpDate >= DateTime.Now)
+                .OrderBy(p => p.ExpDate)
+                .ToList();
+        }
+
+        public void UpdateProduct(Product product)
+        {
+
+            var existingProduct = _db.Products.Find(product.Id);
+            if (existingProduct != null)
+            {
+                existingProduct.Name = product.Name;
+                existingProduct.Description = product.Description;
+                existingProduct.ExpDate = product.ExpDate;
+                existingProduct.Price = product.Price;
+                existingProduct.UserId = product.UserId;
+                existingProduct.SupplierId = product.SupplierId;
+                existingProduct.CategoryId = product.CategoryId;
+                existingProduct.DiscountPercentage = product.DiscountPercentage;
+                existingProduct.DiscountStartDate = product.DiscountStartDate;
+                existingProduct.DiscountEndDate = product.DiscountEndDate;
+                _db.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Product not found");
+            }
         }
 
     }

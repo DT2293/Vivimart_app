@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using WebApplication1.Helper;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebApplication1.Controllers
 {
@@ -35,7 +36,7 @@ namespace WebApplication1.Controllers
             _vnPayService = vnPayService;  
             
         }
-
+      
         public async Task<IActionResult> Employee()
         {
             if (HttpContext.Session.GetString("Username") == null)
@@ -120,7 +121,7 @@ namespace WebApplication1.Controllers
             // Tạo ViewModel
             var viewModel = new SalePageViewModel
             {
-                Products = products.ToPagedList(page, 10),
+                Products = products.ToPagedList(page, 100),
                 //   Invoice = invoice
             };
 
@@ -133,6 +134,71 @@ namespace WebApplication1.Controllers
             var model = GetCartItems();
             return PartialView(model);
         }
+        public IActionResult UpdateCart(int productId, int quantity)
+        {
+            try
+            {
+                // Kiểm tra số lượng có hợp lệ không
+                if (quantity <= 0)
+                {
+                    return BadRequest("Số lượng phải lớn hơn 0."); // Trả về lỗi nếu số lượng không hợp lệ
+                }
+
+                // Lấy danh sách sản phẩm từ Session
+                var cartItems = GetCartItems();
+
+                // Tìm sản phẩm trong giỏ hàng
+                var cartItem = cartItems.FirstOrDefault(item => item.product.Id == productId);
+                if (cartItem != null)
+                {
+                    // Cập nhật số lượng sản phẩm
+                    cartItem.quantity = quantity;
+
+                    // Lưu lại giỏ hàng vào Session
+                    var jsonCart = JsonConvert.SerializeObject(cartItems);
+                    HttpContext.Session.SetString(CARTKEY, jsonCart);
+                }
+                else
+                {
+                    return NotFound("Sản phẩm không tồn tại trong giỏ hàng."); // Trả về lỗi nếu sản phẩm không tìm thấy
+                }
+
+                return Json(new { success = true, product = cartItem.product }); // Trả về sản phẩm đã cập nhật
+            }
+            catch (Exception ex)
+            {
+                // Trả về lỗi
+                return Json(new { success = false, errors = new[] { ex.Message } });
+            }
+        }
+
+
+
+
+        [HttpPost]
+        public IActionResult RemoveFromCart(int id)
+        {
+            // Lấy danh sách các sản phẩm trong giỏ hàng
+            var cart = GetCartItems();
+
+            // Tìm sản phẩm trong giỏ hàng
+            var cartItem = cart.Find(p => p.product.Id == id);
+
+            if (cartItem == null)
+            {
+                return NotFound("Sản phẩm không tồn tại trong giỏ hàng");
+            }
+
+            // Xóa sản phẩm khỏi giỏ hàng
+            cart.Remove(cartItem);
+
+            // Lưu lại giỏ hàng vào Session
+            SaveCartSession(cart);
+
+            // Trả về danh sách giỏ hàng hiện tại (có thể trả về PartialCart nếu cần)
+            return Ok(cart); // Bạn có thể điều chỉnh tùy thuộc vào yêu cầu của ứng dụng
+        }
+
 
 
 
@@ -178,19 +244,20 @@ namespace WebApplication1.Controllers
             return PartialView("AddToCart", GetCartItems());
         }
 
+
         [HttpGet]
         public IActionResult CreateInvoice()
         {
-            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+            // Check if user is logged in
             if (HttpContext.Session.GetString("Username") == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            // Lấy thông tin người dùng từ session
+            // Get username from session
             var username = HttpContext.Session.GetString("Username");
 
-            // Lấy thông tin UserId từ cơ sở dữ liệu dựa trên tên đăng nhập
+            // Retrieve UserId based on username
             var userInfo = _db.Users
                 .Where(u => u.Username == username)
                 .Select(u => new { u.UserId })
@@ -201,17 +268,27 @@ namespace WebApplication1.Controllers
                 return NotFound("Không tìm thấy người dùng.");
             }
 
-            // Tạo đối tượng InvoiceDetailsViewModel với thông tin UserId
+            // Get cart items
+            var cartItems = GetCartItems();
+
+            // Check if cart is empty
+            if (cartItems == null || !cartItems.Any())
+            {
+                TempData["EmptyCartMessage"] = "Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi tạo hóa đơn.";
+                return RedirectToAction("SalePage"); // Redirect to the cart page or wherever is suitable
+            }
+           
+            // Prepare invoice details
             var invoiceDetails = new InvoiceDetailsViewModel
             {
                 UserId = userInfo.UserId,
-                DateTimeInvoice = DateTime.Now, // Thêm ngày tạo hóa đơn
-                CartItems = GetCartItems() // Lấy giỏ hàng từ session hoặc service
+                DateTimeInvoice = DateTime.Now,
+                CartItems = cartItems
             };
 
-            // Trả về view tạo hóa đơn với dữ liệu
             return View(invoiceDetails);
         }
+
 
 
         [HttpPost]

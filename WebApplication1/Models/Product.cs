@@ -1,27 +1,42 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
 {
     public class Product
     {
         [Key]
-        public int Id { get; set; } // Khóa chính cho sản phẩm
+        public int Id { get; set; }
 
-        public string Name { get; set; } // Tên sản phẩm
+        public string Name { get; set; }
 
-        public string Description { get; set; } = null!; // Mô tả sản phẩm, yêu cầu không được null
+        public string Description { get; set; } = null!;
 
-        public DateTime CreateDate { get; set; } // Ngày tạo sản phẩm
+        public DateTime CreateDate { get; set; }
 
-        public DateTime ExpDate { get; set; } // Ngày hết hạn của sản phẩm
+        public DateTime ExpDate { get; set; }
 
         public int Price { get; set; }
-        public int UserId { get; set; } // Khóa ngoại tham chiếu đến User (người tạo sản phẩm)
+        public int UserId { get; set; }
+        // Thêm thuộc tính giảm giá
+        public decimal? DiscountPercentage { get; set; } // Giảm giá phần trăm
+        public DateTime? DiscountStartDate { get; set; } // Ngày bắt đầu giảm giá
+        public DateTime? DiscountEndDate { get; set; }   // Ngày kết thúc giảm giá
+        public int? SupplierId { get; set; }
 
-        public virtual ProductCategory ProductCategory { get; set; } = null!; // Tham chiếu đến danh mục sản phẩm
+        [ForeignKey("SupplierId")]
+        public virtual Suppliers Supplier { get; set; } = null!;
 
-        public ICollection<ProductImage> ProductImages { get; set; } // Danh sách hình ảnh của sản phẩm
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual ProductCategory ProductCategory { get; set; } 
 
-        public ICollection<InvoiceDetail> InvoiceDetails { get; set; } // Danh sách chi tiết hóa đơn liên quan đến sản phẩm
+
+        public ICollection<ProductImage> ProductImages { get; set; }
+
+        public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+
+        public ICollection<OrderProductDetail> OrderProductDetails { get; set; }
     }
+
 }

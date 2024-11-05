@@ -29,7 +29,7 @@
                 <td>@(++index)</td>
                 <td>@item.CategoryName</td>
                 <td>
-                    <a asp-controller="Student" asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-warning" name="id">List Product</a>
+                    <a asp-controller="Product" asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-warning" name="id">List Product</a>
                     <a asp-action="Update" asp-route-id="@item.CategoryId" class="btn btn-primary">Update</a>
                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@item.CategoryId">Delete</button>
 

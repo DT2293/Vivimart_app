@@ -2,12 +2,12 @@
     ViewBag.Title = "Employee";
 }
 
-<div class="container mt-5">
+@* <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h2>Welcome, @ViewBag.Username!</h2>
+                    <h2>Welcome, @ViewBag.Username</h2>
                 </div>
                 <div class="card-body">
                     <p><strong>Email:</strong> @ViewBag.Email</p>
@@ -17,10 +17,77 @@
                     <div class="d-grid gap-2 d-md-block">
                         <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Employee" asp-action="SalePage">Thêm Hoá đơn</a>
                         <a class="btn btn-outline-success me-2" asp-area="" asp-controller="Employee" asp-action="ShowAllCus">Danh Sách Khách hàng</a>
-                        <a class="btn btn-outline-danger" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                    </div>
+                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div> *@
+<div class="container" style="margin-left:-105px">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar p-0">
+            <div class="position-sticky pt-3">
+                <h2 class="text-primary text-center">Welcome, @ViewBag.Username</h2>
+                <p class="text-center"><strong>Email:</strong> @ViewBag.Email</p>
+                <p class="text-center"><strong>Role:</strong> @ViewBag.RoleName</p>
+                <p class="text-center"><strong>Access Type:</strong> @ViewBag.AccessType</p>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Employee" asp-action="SalePage">Thêm Hoá đơn</a>
+                    <a class="btn btn-outline-success me-2" asp-area="" asp-controller="Employee" asp-action="ShowAllCus">Danh Sách Khách hàng</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+            <input id="showChartButton" value="Hiển thị biểu đồ" type="button" />
+            <div>
+                <canvas id="myChart" style="max-height:430px; max-width:600px"></canvas>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script type="text/javascript">
+                $(function () {
+                    $("#showChartButton").click(function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "/SaleRecord/GetSaleData",
+                            dataType: "json",
+                            success: function (data) {
+                                var labels = data.map(x => x.ngay);
+                                var values = data.map(x => x.tongDoanhThu);
+
+                                var ctx = document.getElementById('myChart').getContext('2d');
+                                var myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Doanh thu theo ngày',
+                                            data: values,
+                                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+            <!-- Nội dung chính của trang sẽ được đặt ở đây -->
+        </div>
+    </div>

@@ -1,0 +1,109 @@
+﻿@* @model IEnumerable<WebApplication1.ViewModels.ProductViewModel>
+
+<h2>Danh sách sản phẩm sắp hết hạn</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Mô tả</th>
+                <th>Ngày hết hạn</th>
+                <th>Số ngày còn lại</th>
+                <th>Mức giá</th>
+                <th>Phầm trăm giảm giá</th>
+                <th>Áp dụng giảm giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>instance 
+                    <td>@product.Description</td>
+                    <td>@product.ExpDate.ToString("dd-MM-yyyy")</td>
+                    <td>@((product.ExpDate - DateTime.Now).Days) ngày</td>
+                    <td>@product.Price</td>
+                    <td>@product.DiscountPercentage</td>
+                    <td>
+                        <a id="applyDiscountBtn_@product.Id" class="btn btn-dark me-2" onclick="loadApplyDiscountPartial(@product.Id)">Chọn mức giảm giá</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Container to display the partial view -->
+    <div id="applyDiscountContainer"></div>
+
+    <script>
+        function loadApplyDiscountPartial(productId) {
+            $.ajax({
+                url: '@Url.Action("Applydiscount", "Home")', // Đường dẫn đến action
+                type: 'GET',
+                data: { Id: productId }, // Truyền productId
+                success: function (result) {
+                    $('#applyDiscountContainer').html(result); // Cập nhật nội dung container
+                },
+                error: function () {
+                    alert("Không thể tải partial view. Vui lòng thử lại.");
+                }
+            });
+        }
+    </script>
+
+
+ *@
+ @model IEnumerable<WebApplication1.ViewModels.ProductViewModel>
+
+<h2>Danh sách sản phẩm sắp hết hạn</h2>
+<p>@ViewData["Message"]</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Mô tả</th>
+            <th>Ngày hết hạn</th>
+            <th>Số ngày còn lại</th>
+            <th>Mức giá</th>
+            <th>Phần trăm giảm giá</th>
+            <th>Áp dụng giảm giá</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+    @*             <td>@(product.ExpDate?.ToString("dd-MM-yyyy") ?? "N/A")</td>
+                <td>@(product.ExpDate.HasValue ? (product.ExpDate.Value - DateTime.Now).Days + " ngày" : "Không có ngày hết hạn")</td> *@
+                <td>@product.ExpDate.ToString("dd-MM-yyyy")</td>
+                <td>@((product.ExpDate - DateTime.Now).Days) ngày</td>
+                <td>@product.Price</td>
+                <td>@product.DiscountPercentage</td>
+                <td>
+                    <a id="applyDiscountBtn_@product.Id" class="btn btn-dark me-2" onclick="loadApplyDiscountPartial(@product.Id)">Chọn mức giảm giá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="applyDiscountContainer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function loadApplyDiscountPartial(productId) {
+        $.ajax({
+            url: '@Url.Action("Applydiscount", "Home")',
+            type: 'GET',
+            data: { Id: productId },
+            success: function (result) {
+                $('#applyDiscountContainer').html(result);
+            },
+            error: function () {
+                alert("Không thể tải partial view. Vui lòng thử lại.");
+            }
+        });
+    }
+</script>

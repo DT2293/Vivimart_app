@@ -150,3 +150,9 @@ C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\
 C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\libwkhtmltox.dylib
 C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\libwkhtmltox.so
 C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\DinkToPdf.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\MailKit.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\MimeKit.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\System.Formats.Asn1.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Localization.dll
+C:\Users\Admin\Desktop\huetech\WebApplication1\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Localization.Abstractions.dll

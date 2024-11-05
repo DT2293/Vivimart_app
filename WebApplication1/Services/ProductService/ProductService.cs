@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 using WebApplication1.ViewModels;
-using WebApplication1.ViewModels.ProductViewModel;
 using X.PagedList.Extensions;
 using X.PagedList;
 

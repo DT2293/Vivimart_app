@@ -37,6 +37,10 @@ public partial class AuthContext : DbContext
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+
+    public DbSet<Suppliers> Suppliers { get; set; }
+    public DbSet<OrderProductDetail> OrderProductDetails { get; set; }
+    public DbSet<OrderProduct> OrderProducts { get; set; }
  //   public DbSet<Customer> Customers { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -44,7 +48,11 @@ public partial class AuthContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+
+
+        modelBuilder.Entity<Product>()
+            .Property(p => p.DiscountPercentage)
+            .HasColumnType("decimal(18,2)");
 
         modelBuilder.Entity<Menu>(entity =>
         {
@@ -131,6 +139,7 @@ public partial class AuthContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

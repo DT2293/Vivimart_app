@@ -59,33 +59,37 @@
 
  *@
 
-@using WebApplication1.ViewModels.ProductViewModel
 @using X.PagedList.Mvc.Core
-@model ProductViewModel
+@model WebApplication1.ViewModels.ProductViewModel
 
 
-
-
-<link href="~/css/indexProduct.css" rel="stylesheet" />
-<h2>Product List</h2>
-
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Ảnh</th>
-            <th>Description</th>
-            <th>Create Date</th>
-            <th>Expiration Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in Model.Products)
+<link href="~/css/pagelist.css" rel="stylesheet" />
+<h1>Danh Sách Sản Phẩm</h1>
+<form class="d-flex align-items-center">
+   @*  <div class="form-group col-lg-9 mb-0">
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập NCC">
+    </div>
+    <button type="submit" class="btn btn-primary ms-2">Search</button> *@
+    <a asp-action="Create" class="btn btn-success ms-2">Insert</a>
+</form>
+<br />
+<table class="table table-bordered table-hover">
+    <tr class="table-hover">
+        <th>STT</th>
+        <th>Name</th>
+        <th>Ảnh</th>
+        <th>Description</th>
+        <th>Create Date</th>
+        <th>Expiration Date</th>
+        <th>Actions</th>
+    </tr>   
+    @if (Model.Products != null)
+    {
+        var index = 0;
+        foreach (var product in Model.Products)
         {
             <tr>
+                <td>@(++index)</td>
                 <td>@product.Name</td>
                 <td>
                     @if (product.ProductImages != null && product.ProductImages.Any())
@@ -101,15 +105,39 @@
                 <td>@product.CreateDate</td>
                 <td>@product.ExpDate</td>
                 <td>
-                    <a class="btn btn-warning" asp-controller="Product" asp-action="Update" asp-route-id="@product.Id">Chỉnh sửa</a>
-                    <a class="btn btn-warning" asp-controller="Product" asp-action="UploadPhoto" asp-route-id="@product.Id">Chỉnh sửa hinh anh</a>
-                    <a href="/Product/Delete/@product.Id" class="btn btn-danger">Delete</a>
+                    <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-primary">Update</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@product.Id">Delete</button>
+                   
+                    <div class="modal fade" id="delete_@product.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to delete @product.Name?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-primary">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
         }
-    </tbody>
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No data</td>
+        </tr>
+    }
 </table>
-<a href="/Product/Create" class="btn btn-success">Add New Product</a>
+ <br /> 
 <div class="pagination">
     @Html.PagedListPager(Model.Products, page => Url.Action("Index", new { page }))
 </div>
+

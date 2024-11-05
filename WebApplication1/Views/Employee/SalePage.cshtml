@@ -26,6 +26,13 @@
     </div>
 
     <div class="container mt-4">
+        @if (TempData["EmptyCartMessage"] != null)
+        {
+            <div id="emptyCartMessage" class="alert alert-warning">
+                @TempData["EmptyCartMessage"]
+            </div>
+        }
+
         <div class="row">
             <div class="col-md-6">
                 <div id="cart" class="border p-3">
@@ -65,7 +72,7 @@
         </div>
     </div>
 </section>
-
+@* 
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -85,6 +92,9 @@
                 success: function (response) {
                     console.log("Product added successfully."); // Kiểm tra thông báo thành công
                     loadCart(); // Tải lại giỏ hàng sau khi thêm sản phẩm
+
+                    // Ẩn thông báo giỏ hàng trống nếu có
+                    $("#emptyCartMessage").hide();
                 },
                 error: function (response) {
                     console.error("Error adding product:", response); // Ghi lỗi ra console
@@ -92,6 +102,163 @@
                 }
             });
         }
+        function removeFromCart(productId) {
+            console.log("Removing product with ID:", productId);
+            $.ajax({
+                url: "/Employee/RemoveFromCart/" + productId,
+                type: 'post',
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log("Product removed successfully.");
+                    loadCart();
+                },
+                error: function (response) {
+                    console.error("Error removing product:", response);
+                    alert(response.responseJSON.errors[0]);
+                }
+            });
+        }
+
+        function updateQuantity(productId, quantity) {
+            $.ajax({
+                url: "/Employee/UpdateCart",
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({ productId: productId, quantity: quantity }),
+                success: function (response) {
+                    if (response.success) {
+                        console.log("Quantity updated successfully.");
+                        loadCart(); // Tải lại giỏ hàng
+                    } else {
+                        alert(response.errors[0]); // Hiển thị lỗi nếu có
+                    }
+                },
+                error: function (response) {
+                    console.error("Error updating quantity:", response);
+                    alert(response.responseJSON.errors[0]);
+                }
+            });
+        }
+
+
+
+     
     </script>
 }
+ *@
+ @section Scripts{
+    <script>
+        $(document).ready(function () {
+            loadCart();
+        });
+
+        function loadCart() {
+            $("#cart").load("/Employee/AddToCartPartial/");
+        }
+        function addtocart(id) {
+            console.log("Adding product with ID:", id); // Kiểm tra ID sản phẩm
+            $.ajax({
+                url: "/Employee/AddToCart/" + id,
+                type: 'post',
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log("Product added successfully."); // Kiểm tra thông báo thành công
+                    loadCart(); // Tải lại giỏ hàng sau khi thêm sản phẩm
+
+                    // Ẩn thông báo giỏ hàng trống nếu có
+                    $("#emptyCartMessage").hide();
+                },
+                error: function (response) {
+                    console.error("Error adding product:", response); // Ghi lỗi ra console
+                    alert(response.responseJSON.errors[0]);
+                }
+            });
+        }
+        function removeFromCart(productId) {
+            console.log("Removing product with ID:", productId);
+            $.ajax({
+                url: "/Employee/RemoveFromCart/" + productId,
+                type: 'post',
+                contentType: 'application/json',
+                success: function (response) {
+                    console.log("Product removed successfully.");
+                    loadCart();
+                },
+                error: function (response) {
+                    console.error("Error removing product:", response);
+                    alert(response.responseJSON.errors[0]);
+                }
+            });
+        }
+
+        // function updateQuantity(productId, quantity) {
+        //     $.ajax({
+        //         url: '/Employee/UpdateCart',
+        //         type: 'POST',
+        //         data: { productId: productId, quantity: quantity },
+        //         success: function (response) {
+        //             if (response.success) {
+        //                 // Cập nhật tổng tiền nếu thành công
+        //                 updateTotalPrice(productId, quantity, response.product.price);
+        //             } else {
+        //                 console.error("Error updating quantity:", response.errors);
+        //                 alert("Lỗi: " + response.errors.join(", "));
+        //             }
+        //         },
+        //         error: function (xhr) {
+        //             console.error("Error updating quantity:", xhr);
+        //             alert("Lỗi: " + xhr.responseText); // Hiển thị thông báo lỗi từ server
+        //         }
+        //     });
+        // }
+
+        // function updateTotalPrice(productId, quantity, price) {
+        //     var totalPrice = quantity * price;
+        //     $('#totalprice_' + productId).text(totalPrice.toLocaleString() + ' VND');
+        // }
+        function updateQuantity(productId, quantity) {
+            // Validate quantity input
+            if (quantity <= 0) {
+                alert("Quantity must be greater than zero.");
+                return;
+            }
+
+            $.ajax({
+                url: '/Employee/UpdateCart',
+                type: 'POST',
+                data: { productId: productId, quantity: quantity },
+                success: function (response) {
+                    if (response.success) {
+                        // Update total price if successful
+                        updateTotalPrice(productId, quantity, response.product.price);
+                    } else {
+                        // Log errors if the response indicates a failure
+                        console.error("Error updating quantity:", response.errors);
+                        alert("Error: " + response.errors.join(", "));
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Log AJAX errors and show an alert to the user
+                    console.error("AJAX error:", status, error);
+                    alert("Error: " + xhr.responseText || "An error occurred while updating the quantity.");
+                }
+            });
+        }
+
+        function updateTotalPrice(productId, quantity, price) {
+            // Calculate total price
+            var totalPrice = quantity * price;
+
+            // Update the total price displayed on the page
+            $('#totalprice_' + productId).text(totalPrice.toLocaleString() + ' VND');
+        }
+
+        // Optional: Example usage of the updateQuantity function
+        // Assume you have an input field for quantity that triggers this function
+        // <input type="number" onchange="updateQuantity(productId, this.value)" />
     
+
+
+    </script>
+
+ }

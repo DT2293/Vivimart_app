@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using X.PagedList.Mvc.Core
+@model WebApplication1.ViewModels.SupplierViewModel
+<link href="~/css/pagelist.css" rel="stylesheet" />
+<h1>Danh Sách Nhà Cung Cấp</h1>
+<form class="d-flex align-items-center">
+    <div class="form-group col-lg-9 mb-0">
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập NCC">
+    </div>
+    <button type="submit" class="btn btn-primary ms-2">Search</button>
+    <a asp-action="InsertSupplier" class="btn btn-success ms-2">Insert</a>
+</form>
+<br />
+<table class="table table-bordered table-hover">
+    <tr class="table-hover">
+        <th>STT</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Fax</th>
+        <th>Action</th>
+    </tr>   
+    @if (Model.listSupplier != null)
+    {
+        var index = 0;
+        foreach (var suppliers in Model.listSupplier)
+        {
+            <tr>
+                <td>@(++index)</td>
+                <td>@suppliers.SupplierName</td>
+                <td>@suppliers.Address</td>
+                <td>@suppliers.Phone</td>
+                <td>@suppliers.Email</td>
+                <td>@suppliers.Fax</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@suppliers.SupplierID" class="btn btn-primary">Update</a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@suppliers.SupplierID">Delete</button>
+                    <a asp-action="OrderProductPage" asp-route-id="@suppliers.SupplierID" class="btn btn-primary">OrderProduct</a>
+                    <div class="modal fade" id="delete_@suppliers.SupplierID" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to delete @suppliers.SupplierName?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a asp-action="Delete" asp-route-id="@suppliers.SupplierID" class="btn btn-primary">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4">No data</td>
+        </tr>
+    }
+</table>
+ <br /> 
+<div class="pagination">
+    @Html.PagedListPager(Model.listSupplier, page => Url.Action("SupplierPage", new { page, keyWord = Model.keyWord }))
+</div>
