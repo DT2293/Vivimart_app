@@ -24,6 +24,7 @@ namespace WebApplication1.ViewModels
         public List<OptionModel> Suppliers { get; set; }
         public List<OptionModel> options { get; set; }
 
+        public string keyWord { get; set; }
         public decimal? DiscountPercentage { get; set; } // Giảm giá phần trăm
         public DateTime? DiscountStartDate { get; set; } // Ngày bắt đầu giảm giá
         public DateTime? DiscountEndDate { get; set; }   // Ngày kết thúc giảm giá

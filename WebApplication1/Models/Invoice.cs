@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication1.Models
 {
+
     public class Invoice
     {
         [Key]
@@ -20,4 +21,6 @@ namespace WebApplication1.Models
         // Danh sách chi tiết hóa đơn
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
     }
+    
+    
 }

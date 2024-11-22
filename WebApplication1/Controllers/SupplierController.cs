@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using X.PagedList;
 using X.PagedList.Extensions;
+using WebApplication1.Services.SystemService;
 
 namespace WebApplication1.Controllers
 {
@@ -62,6 +63,29 @@ namespace WebApplication1.Controllers
 
             return View(supplier);
         }
+
+        //[HttpGet]
+        //public IActionResult InsertSupplier()
+        //{
+        //    return PartialView("InsertSupplier");
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> InsertSupplier(Suppliers supplier)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        bool success = await _supplierService.InsertSupplierAsync(supplier);
+        //        if (success)
+        //        {
+        //            return Json(new { success = true, redirectUrl = Url.Action("SupplierPage") });
+        //        }
+        //        ModelState.AddModelError(string.Empty, "An error occurred while saving the supplier.");
+        //    }
+
+        //    return PartialView("InsertSupplierPartial", supplier);
+        //}
+
 
         [HttpGet]
         public IActionResult Edit(int id)

@@ -1,4 +1,112 @@
-﻿@{
+﻿@* @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input id="showChartButton" value="Hiển thị biểu đồ" type="button" />
+
+<div>
+    <style>
+        canvas {
+            max-height: 430px;
+            max-width: 600px;
+            display: block; /* Đảm bảo canvas không bị ẩn */
+        }
+    </style>
+
+    <!-- Biểu đồ doanh thu theo ngày -->
+    <canvas id="myChart" style="max-height:430px; max-width:600px"></canvas>
+
+    <!-- Biểu đồ doanh thu theo tháng -->
+    <canvas id="myChart1" style="max-height:430px; max-width:600px"></canvas>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#showChartButton").click(function () {
+            console.log("Button clicked!");
+
+            // Vẽ biểu đồ doanh thu theo ngày (Biểu đồ Line)
+            $.ajax({
+                type: "GET",
+                url: "/SaleRecord/GetSaleData",
+                dataType: "json",
+                success: function (data) {
+                    var labels = data.map(x => x.ngay);
+                    var values = data.map(x => x.tongDoanhThu);
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',  // Line chart for daily revenue
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Doanh thu theo ngày',
+                                data: values,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+            // Vẽ biểu đồ doanh thu theo tháng (Biểu đồ Bar)
+            $.ajax({
+                type: "GET",
+                url: "/SaleRecord/getMonthlySaleData",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);  // Kiểm tra dữ liệu trả về
+                    if (data && data.length > 0) {
+                        var labels = data.map(x => x.Nam + '-' + (x.Thang < 10 ? '0' + x.Thang : x.Thang)); // Format labels like 'YYYY-MM'
+                        var values = data.map(x => x.tongDoanhThu);
+
+                        var ctx = document.getElementById('myChart1').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',  // Bar chart for monthly revenue
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Doanh thu theo tháng',
+                                    data: values,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+    });
+</script>
+ *@
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 

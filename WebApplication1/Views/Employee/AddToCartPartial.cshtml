@@ -1,4 +1,6 @@
-﻿@model List<WebApplication1.Models.CartItem>
+﻿
+@model List<WebApplication1.Models.CartItem>
+
 
 @if (Model == null || !Model.Any())
 {
@@ -55,6 +57,9 @@ else
         <h3 class="text-right text-primary">
             Tổng số tiền phải thanh toán là:
             <span class="text-danger">@Model.Sum(item => item.quantity * item.product.Price).ToString("N0") VND</span>
+            <div class="col-md-auto">
+                <a class="btn btn-dark mt-2" asp-area="" asp-controller="Employee" asp-action="CreateInvoice">Thanh toán</a>
+            </div>
         </h3>
     </div>
 }

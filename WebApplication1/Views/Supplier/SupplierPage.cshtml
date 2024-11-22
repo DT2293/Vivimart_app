@@ -12,7 +12,8 @@
         <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập NCC">
     </div>
     <button type="submit" class="btn btn-primary ms-2">Search</button>
-    <a asp-action="InsertSupplier" class="btn btn-success ms-2">Insert</a>
+    <a class="btn btn-success ms-2" onclick="createsupplier()" href="#">Create User</a>
+    @* <a asp-action="InsertSupplier" class="btn btn-success ms-2">Insert</a> *@
 </form>
 <br />
 <table class="table table-bordered table-hover">

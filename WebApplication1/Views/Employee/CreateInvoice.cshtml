@@ -1,14 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@using WebApplication1.ViewModels
+﻿@using WebApplication1.ViewModels
 @model InvoiceDetailsViewModel
 
 <h2>Chi Tiết Hóa Đơn</h2>
@@ -16,9 +6,22 @@
 <p><strong>Ngày Lập:</strong> @Model.DateTimeInvoice.ToString("dd/MM/yyyy HH:mm:ss")</p>
 
 <div class="container">
-    
-    <h4>Khách lẻ</h4> 
+
+    <h4>
+        Tên khách hàng :
+        @if (string.IsNullOrEmpty(Model.Name))
+        {
+            <span>Khách lẻ</span>
+        }
+        else
+        {
+            <span>@Model.Name</span>
+        }
+    </h4>
+
+    <p><strong>Số Điện Thoại:</strong> @Model.PhoneNumber</p>
     <hr />
+
     <div class="row">
         <div class="col-6">
             <p>Tổng tiền hàng</p>
@@ -31,7 +34,6 @@
             <p>Giảm giá</p>
         </div>
         <div class="col-6 text-end">
-            <!--<p>Model.Discount.ToString("N0") đ</p>-->
             <p>Comming Soon</p>
         </div>
 
@@ -39,7 +41,6 @@
             <p>Khách cần trả</p>
         </div>
         <div class="col-6 text-end">
-            <!-- <p class="fw-bold text-primary">Model.AmountToPay.ToString("N0") đ</p>-->
             <p>@Model.GetTotal().ToString("N0") đ</p>
         </div>
 
@@ -47,7 +48,6 @@
             <p>Khách thanh toán</p>
         </div>
         <div class="col-6 text-end">
-            <!--<p>Model.CustomerPaid.ToString("N0") đ</p> -->
             <p>Comming soon</p>
         </div>
     </div>
@@ -65,6 +65,8 @@
             <input class="form-check-input" type="radio" name="paymentMethod" value="Thanh toán vnpay" id="vnpayRadio">
             <label class="form-check-label" for="vnpayRadio">VNPay</label>
         </div>
+    </div>
+
     <form asp-controller="employee" asp-action="CreateInvoice" method="post">
         <input type="hidden" name="UserId" value="@Model.UserId" />
         <input type="hidden" name="DateTimeInvoice" value="@Model.DateTimeInvoice" />
@@ -72,4 +74,3 @@
         <button type="submit" class="btn btn-danger">Xác nhận thanh toán</button>
     </form>
 </div>
-

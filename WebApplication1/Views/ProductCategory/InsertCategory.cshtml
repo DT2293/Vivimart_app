@@ -1,0 +1,16 @@
+﻿@model WebApplication1.ViewModels.ProductCategoryViewModel
+
+<h1 class="text-center my-4">Thêm Danh Mục</h1>
+
+<form asp-action="InsertCategory" method="post">
+    <!-- Trường ẩn để truyền userId -->
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+
+    <div class="form-group">
+        <label for="CategoryName">Tên Danh Mục</label>
+        <input type="text" class="form-control" id="CategoryName" name="CategoryName" value="@Model.selectedCategory?.CategoryName" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm</button>
+</form>
+ 

@@ -27,16 +27,52 @@ namespace WebApplication1.Controllers
             _supplierService = supplierService;
         }
 
-        public IActionResult Index(int? categoryId, int page = 1)
+        //public IActionResult Index(int? categoryId, int page = 1,string keyWord)
+        //{
+
+        //    var categories = _productCategoryService.GetAll().Select(x => new OptionModel
+        //    {
+        //        Value = x.CategoryId.ToString(),
+        //        Text = x.CategoryName
+        //    }).ToList();
+
+        //    var products = _productService.ListProduct(categoryId);
+
+        //    // Phân trang danh sách sản phẩm
+        //    int pageSize = 5; // Số sản phẩm trên mỗi trang
+        //    var pagedProducts = products.ToPagedList(page, pageSize);
+
+        //    // Tạo ProductViewModel
+        //    var data = new ProductViewModel
+        //    {
+        //        Products = pagedProducts,
+        //        options = categories,
+        //        SelectedCategoryId = categoryId
+        //    };
+
+        //    return View(data);
+        //}
+        public IActionResult Index(string keyWord,int? categoryId, int page = 1)
         {
-            
+            // Lấy danh sách các danh mục
             var categories = _productCategoryService.GetAll().Select(x => new OptionModel
             {
                 Value = x.CategoryId.ToString(),
                 Text = x.CategoryName
             }).ToList();
 
-            var products = _productService.ListProduct(categoryId);
+            List<Product> products;
+
+            if (!string.IsNullOrEmpty(keyWord))
+            {
+                // Nếu có từ khóa tìm kiếm, gọi GetByName để lấy sản phẩm theo tên
+                products = _productService.GetByName(keyWord);
+            }
+            else
+            {
+                // Nếu không có từ khóa, lấy sản phẩm theo danh mục
+                products = _productService.ListProduct(categoryId);
+            }
 
             // Phân trang danh sách sản phẩm
             int pageSize = 5; // Số sản phẩm trên mỗi trang

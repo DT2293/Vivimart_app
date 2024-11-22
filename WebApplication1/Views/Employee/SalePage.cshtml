@@ -1,67 +1,68 @@
-﻿@using WebApplication1.ViewModels
+﻿﻿@using WebApplication1.ViewModels
 @using System.Security.Claims
 
 @model SalePageViewModel
 
 <section>
-    <div class="container mt-4">
-        <div class="row align-items-center">
-            <!-- Menu xổ ra -->
-            <div class="col-md-3">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Menu
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Tùy chọn 1</a></li>
-                        <li><a class="dropdown-item" href="#">Tùy chọn 2</a></li>
-                        <li><a class="dropdown-item" href="#">Tùy chọn 3</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <h2>Tạo Hóa Đơn</h2>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="CreateInvoice">Thanh toán</a>
-        </div>
-    </div>
-
-    <div class="container mt-4">
+    <div class="container mt-1">
         @if (TempData["EmptyCartMessage"] != null)
         {
-            <div id="emptyCartMessage" class="alert alert-warning">
+            <div id="emptyCartMessage" class="alert alert-warning alert-dismissible fade show">
                 @TempData["EmptyCartMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
 
         <div class="row">
-            <div class="col-md-6">
-                <div id="cart" class="border p-3">
-                    <!-- Nội dung giỏ hàng sẽ được tải ở đây -->
+            <!-- Cart Section -->
+            <div class="col-md-6 mb-4">
+                <div class="form-group">
+                    <label asp-for="PhoneNumber"></label>
+                    <textarea asp-for="PhoneNumber" class="form-control"></textarea>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <br />
+                <div id="cart" class="border rounded p-4 shadow-sm">
+                    <!-- Cart Content -->
                 </div>
             </div>
 
+            <!-- Product List Section -->
             <div class="col-md-6">
-                <h1>Danh Sách Sản Phẩm</h1>
+                <div class="col-md-8 d-flex justify-content-between align-items-center">
+                    <h3 class="fw-bold mb-1">Danh Sách Sản Phẩm</h3>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Tùy chọn 1</a></li>
+                            <li><a class="dropdown-item" href="#">Tùy chọn 2</a></li>
+                            <li><a class="dropdown-item" href="#">Tùy chọn 3</a></li>
+                        </ul>
+                    </div>
+                </div>
 
+                <br />
                 <div class="row overflow-auto" style="max-height: 500px;">
                     @foreach (var product in Model.Products)
                     {
-                        <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100 shadow-sm">
                                 @if (product.ProductImages != null && product.ProductImages.Any())
                                 {
-                                    <img src="/assets/Image/@product.ProductImages.First().FileName" alt="@product.Name" class="card-img-top img-fluid" style="height: 100px; object-fit: cover;">
+                                    <img src="/assets/Image/@product.ProductImages.First().FileName" alt="@product.Name" class="card-img-top img-fluid" style="height: 120px; object-fit: cover;">
                                 }
                                 else
                                 {
-                                    <img src="/assets/Image/no-image.jpg" alt="No Image" class="card-img-top img-fluid" style="height: 100px; object-fit: cover;">
+                                    <img src="/assets/Image/no-image.jpg" alt="No Image" class="card-img-top img-fluid" style="height: 120px; object-fit: cover;">
                                 }
 
-                                <div class="card-body">
-                                    <h6 class="card-title">@product.Name</h6>
-                                    <p class="card-text">Giá: <strong class="text-danger">@product.Price.ToString("N0") VND</strong></p>
+                                <div class="card-body text-center">
+                                    <h6 class="card-title text-truncate">@product.Name</h6>
+                                    <p class="card-text mb-2">Giá: <strong class="text-danger">@product.Price.ToString("N0") VND</strong></p>
                                     <button class="btn btn-outline-primary w-100" onclick="addtocart(@product.Id)">
-                                        <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                        <i class="fas fa-shopping-cart me-2"></i> Thêm vào giỏ hàng
                                     </button>
                                 </div>
                             </div>
@@ -72,8 +73,8 @@
         </div>
     </div>
 </section>
-@* 
-@section Scripts {
+
+@section Scripts{
     <script>
         $(document).ready(function () {
             loadCart();
@@ -84,24 +85,23 @@
         }
 
         function addtocart(id) {
-            console.log("Adding product with ID:", id); // Kiểm tra ID sản phẩm
+            console.log("Adding product with ID:", id);
             $.ajax({
                 url: "/Employee/AddToCart/" + id,
                 type: 'post',
                 contentType: 'application/json',
                 success: function (response) {
-                    console.log("Product added successfully."); // Kiểm tra thông báo thành công
-                    loadCart(); // Tải lại giỏ hàng sau khi thêm sản phẩm
-
-                    // Ẩn thông báo giỏ hàng trống nếu có
+                    console.log("Product added successfully.");
+                    loadCart();
                     $("#emptyCartMessage").hide();
                 },
                 error: function (response) {
-                    console.error("Error adding product:", response); // Ghi lỗi ra console
+                    console.error("Error adding product:", response);
                     alert(response.responseJSON.errors[0]);
                 }
             });
         }
+
         function removeFromCart(productId) {
             console.log("Removing product with ID:", productId);
             $.ajax({
@@ -120,104 +120,6 @@
         }
 
         function updateQuantity(productId, quantity) {
-            $.ajax({
-                url: "/Employee/UpdateCart",
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify({ productId: productId, quantity: quantity }),
-                success: function (response) {
-                    if (response.success) {
-                        console.log("Quantity updated successfully.");
-                        loadCart(); // Tải lại giỏ hàng
-                    } else {
-                        alert(response.errors[0]); // Hiển thị lỗi nếu có
-                    }
-                },
-                error: function (response) {
-                    console.error("Error updating quantity:", response);
-                    alert(response.responseJSON.errors[0]);
-                }
-            });
-        }
-
-
-
-     
-    </script>
-}
- *@
- @section Scripts{
-    <script>
-        $(document).ready(function () {
-            loadCart();
-        });
-
-        function loadCart() {
-            $("#cart").load("/Employee/AddToCartPartial/");
-        }
-        function addtocart(id) {
-            console.log("Adding product with ID:", id); // Kiểm tra ID sản phẩm
-            $.ajax({
-                url: "/Employee/AddToCart/" + id,
-                type: 'post',
-                contentType: 'application/json',
-                success: function (response) {
-                    console.log("Product added successfully."); // Kiểm tra thông báo thành công
-                    loadCart(); // Tải lại giỏ hàng sau khi thêm sản phẩm
-
-                    // Ẩn thông báo giỏ hàng trống nếu có
-                    $("#emptyCartMessage").hide();
-                },
-                error: function (response) {
-                    console.error("Error adding product:", response); // Ghi lỗi ra console
-                    alert(response.responseJSON.errors[0]);
-                }
-            });
-        }
-        function removeFromCart(productId) {
-            console.log("Removing product with ID:", productId);
-            $.ajax({
-                url: "/Employee/RemoveFromCart/" + productId,
-                type: 'post',
-                contentType: 'application/json',
-                success: function (response) {
-                    console.log("Product removed successfully.");
-                    loadCart();
-                },
-                error: function (response) {
-                    console.error("Error removing product:", response);
-                    alert(response.responseJSON.errors[0]);
-                }
-            });
-        }
-
-        // function updateQuantity(productId, quantity) {
-        //     $.ajax({
-        //         url: '/Employee/UpdateCart',
-        //         type: 'POST',
-        //         data: { productId: productId, quantity: quantity },
-        //         success: function (response) {
-        //             if (response.success) {
-        //                 // Cập nhật tổng tiền nếu thành công
-        //                 updateTotalPrice(productId, quantity, response.product.price);
-        //             } else {
-        //                 console.error("Error updating quantity:", response.errors);
-        //                 alert("Lỗi: " + response.errors.join(", "));
-        //             }
-        //         },
-        //         error: function (xhr) {
-        //             console.error("Error updating quantity:", xhr);
-        //             alert("Lỗi: " + xhr.responseText); // Hiển thị thông báo lỗi từ server
-        //         }
-        //     });
-        // }
-
-        // function updateTotalPrice(productId, quantity, price) {
-        //     var totalPrice = quantity * price;
-        //     $('#totalprice_' + productId).text(totalPrice.toLocaleString() + ' VND');
-        // }
-        function updateQuantity(productId, quantity) {
-            // Validate quantity input
             if (quantity <= 0) {
                 alert("Quantity must be greater than zero.");
                 return;
@@ -229,16 +131,13 @@
                 data: { productId: productId, quantity: quantity },
                 success: function (response) {
                     if (response.success) {
-                        // Update total price if successful
                         updateTotalPrice(productId, quantity, response.product.price);
                     } else {
-                        // Log errors if the response indicates a failure
                         console.error("Error updating quantity:", response.errors);
                         alert("Error: " + response.errors.join(", "));
                     }
                 },
                 error: function (xhr, status, error) {
-                    // Log AJAX errors and show an alert to the user
                     console.error("AJAX error:", status, error);
                     alert("Error: " + xhr.responseText || "An error occurred while updating the quantity.");
                 }
@@ -246,19 +145,8 @@
         }
 
         function updateTotalPrice(productId, quantity, price) {
-            // Calculate total price
             var totalPrice = quantity * price;
-
-            // Update the total price displayed on the page
             $('#totalprice_' + productId).text(totalPrice.toLocaleString() + ' VND');
         }
-
-        // Optional: Example usage of the updateQuantity function
-        // Assume you have an input field for quantity that triggers this function
-        // <input type="number" onchange="updateQuantity(productId, this.value)" />
-    
-
-
     </script>
-
- }
+}

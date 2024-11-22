@@ -35,6 +35,13 @@ namespace WebApplication1.Services
                       .Include(p => p.ProductImages)
                       .FirstOrDefault(p => p.Id == id);
         }
+        public List<Product> GetByName(string keyWord)
+        {
+            List<Product> obj = _db.Products.Where(x => x.Name.Contains(keyWord)).ToList();
+
+            return obj;
+        }
+
 
 
         //public List<Product> ListProduct()

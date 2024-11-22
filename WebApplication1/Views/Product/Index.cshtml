@@ -65,11 +65,18 @@
 
 <link href="~/css/pagelist.css" rel="stylesheet" />
 <h1>Danh Sách Sản Phẩm</h1>
-<form class="d-flex align-items-center">
-   @*  <div class="form-group col-lg-9 mb-0">
+@* <form class="d-flex align-items-center">
+    <div class="form-group col-lg-9 mb-0">
         <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập NCC">
     </div>
-    <button type="submit" class="btn btn-primary ms-2">Search</button> *@
+    <button type="submit" class="btn btn-primary ms-2">Search</button> 
+    <a asp-action="Create" class="btn btn-success ms-2">Insert</a>
+</form> *@
+<form class="d-flex align-items-center">
+    <div class="form-group col-lg-9 mb-0">
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập tên sản phẩm">
+    </div>
+    <button type="submit" class="btn btn-primary ms-2">Search</button>
     <a asp-action="Create" class="btn btn-success ms-2">Insert</a>
 </form>
 <br />

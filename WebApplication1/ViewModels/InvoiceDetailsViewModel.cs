@@ -8,12 +8,17 @@ namespace WebApplication1.ViewModels
     public class InvoiceDetailsViewModel
 {
     public int UserId { get; set; }
+    
+        
     public IPagedList<Product> Products { get; set; }
     public Invoice Invoice { get; set; } = new Invoice();
     public List<CartItem> CartItems { get; set; } = new List<CartItem>();
     public int InvoiceId { get; set; }
     public DateTime DateTimeInvoice { get; set; } = DateTime.Now;
 
+    public string? PhoneNumber { get; set; }
+        public string? Name { get; set; }
+  //  public List<Customer> Customers { get; set; }
     // Thêm thuộc tính cho danh sách sản phẩm
     public List<CartItemViewModel> Items { get; set; } = new List<CartItemViewModel>();
     public List<InvoiceDetail> Details { get; set; }

@@ -6,9 +6,12 @@ namespace WebApplication1.ViewModels
     public class SalePageViewModel
     {
         public int UserId { get; set; }
+
+        public string? PhoneNumber { get; set; }
         public IPagedList<Product> Products { get; set; } 
         public Invoice Invoice { get; set; } = new Invoice();
         public List<CartItem> CartItems { get; set; }
+      //  public List<Customer> customers { get; set; }
     }
     //public class SalePageViewModel
     //{

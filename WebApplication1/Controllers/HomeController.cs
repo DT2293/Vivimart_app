@@ -43,6 +43,7 @@ namespace WebApplication1.Controllers
                 .Where(u => u.Username == username)
                 .Select(u => new
                 {
+                 
                     u.Username,
                     u.Email,
                     RoleName = _db.UserRoles
@@ -71,7 +72,7 @@ namespace WebApplication1.Controllers
             return View("Index");
         }
 
-            [HttpGet]
+        [HttpGet]
         public IActionResult CreateUser()
         {
             var viewModel = new CreateUserViewModel
@@ -101,31 +102,6 @@ namespace WebApplication1.Controllers
                 return Json(new { success = false, errors = model.Error });
             }
         }
-
-        //[HttpPost]
-        //public IActionResult CreateUser(CreateUserViewModel model)
-        //{
-        //    var kt = _systemService.AddUserWithRoleAsync(model.User.Username, model.User.Password, model.User.Email, model.SelectedRole);
-        //    if (kt == 0)
-        //    {
-
-        //        return RedirectToAction("Index");
-
-        //    }
-        //    else if (kt == 2)
-        //    {
-        //        model.Error.Add("tai khoan da ton tai");
-        //        model.Roles = _systemService.GetRoles();
-        //        return View(model);
-        //    }
-        //    else
-        //    {
-        //        model.Roles = _systemService.GetRoles();
-        //        model.Error.Add("mat khau chua du 8 ky tu");
-        //        return View(model);
-        //    }
-        //}
-
         [HttpGet]     
         public IActionResult ShowAllEmp(EmpoyeeViewModel data)
         {

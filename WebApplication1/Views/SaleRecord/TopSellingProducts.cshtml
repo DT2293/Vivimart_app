@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TopSellingProduct>
+
+<h2 class="text-center">Thống kê doanh thu sản phẩm</h2>
+
+<!-- Form để chọn ngày bắt đầu và ngày kết thúc -->
+<form asp-action="TopSellingProducts" method="post" class="p-4 border rounded shadow-sm">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="startDate" class="form-label">Ngày bắt đầu:</label>
+            <input type="date" id="startDate" name="startDate" class="form-control" required />
+        </div>
+        <div class="col-md-3">
+            <label for="endDate" class="form-label">Ngày kết thúc:</label>
+            <input type="date" id="endDate" name="endDate" class="form-control" required />
+        </div>
+        <div class="col-md-3">
+            <label for="top" class="form-label">Số lượng sản phẩm:</label>
+            <input type="number" id="top" name="top" class="form-control" value="10" min="1" />
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Thống kê</button>
+        </div>
+    </div>
+</form>
+
+<!-- Bảng hiển thị kết quả -->
+@if (Model != null && Model.Any())
+{
+    <h3 class="mt-4 text-center">Kết quả thống kê</h3>
+    <table class="table table-striped table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng bán</th>
+                <th>Giá</th>
+                <th>Mã danh mục</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductId</td>
+                    <td>@product.ProductName</td>
+                    <td>@product.TotalQuantitySold</td>
+                    <td>@product.Price</td>
+                    <td>@product.CategoryId</td>
+                    <td>@product.Revenue</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model != null)
+{
+    <p class="text-center">Không có dữ liệu cho khoảng thời gian được chọn.</p>
+}
+    

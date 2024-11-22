@@ -1,4 +1,4 @@
-﻿@model WebApplication1.ViewModels.CreateUserViewModel
+﻿@* @model WebApplication1.ViewModels.CreateUserViewModel
 @{
     ViewBag.Title = "Home Page";
 }
@@ -6,7 +6,7 @@
 <div class="container" style="margin-left:-80px">
     
     <div class="row">
-        <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar p-0">
+        <nav class="col-md-3 col-lg-3 d-md-block bg-light sidebar p-0">
                 <div class="position-sticky pt-3">
                     <h2 class="text-primary text-center">Welcome, @ViewBag.Username</h2>
                     <div class="d-grid gap-2">
@@ -20,14 +20,14 @@
                 </div>
          </nav>
 
-        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mt-3">
+        <div class="col-md-11 ms-sm-auto col-lg-9 px-md-9 mt-1 pt-1">
             <div id="chart">
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                 <canvas id="myChart" style="max-height:430px; max-width:600px"></canvas>
                
             </div> 
-            <div id="ShowAllEmp" style="display: none;">
+            <div  id="ShowAllEmp" style="display: none;">
                
 
             </div>
@@ -35,6 +35,7 @@
             <!-- Placeholder for Create User Form -->
             <div id="CreateUserContainer" style="display: none;"></div>
             <div id="EditUserContainer" style="display: none;"></div>
+            <div id="CreateSupplierContainer" style="display: none;"></div>
         </div>
 
        
@@ -66,49 +67,22 @@
                 }
             });
         });
-    
-    // $(function () {
-    //     // Khi nhấn nút tìm kiếm
-    //     $("#searchButton").click(function () {
-    //         const searchTerm = $('#searchInput').val(); // Lấy giá trị từ input tìm kiếm
-            
-    //         // Kiểm tra nếu từ khóa tìm kiếm không trống
-    //         if (searchTerm.trim() === "") {
-    //             alert("Vui lòng nhập từ khóa tìm kiếm.");
-    //             return; // Dừng hàm nếu không có từ khóa
-    //         }
-
-    //         // Gửi yêu cầu GET đến Action ShowAllEmp với từ khóa tìm kiếm
-    //         $.ajax({
-    //             url: '@Url.Action("ShowAllEmp", "Home")',
-    //             type: 'GET',
-    //             data: { keyWord: searchTerm }, // Gửi từ khóa tìm kiếm
-    //             success: function (data) {
-    //                 $('#ShowAllEmp').html(data).show(); // Cập nhật nội dung với dữ liệu nhận được
-    //                 $('#chart, #CreateUserContainer').hide(); // Ẩn các phần khác
-    //             },
-    //             error: function (xhr, status, error) {
-    //                 console.error("Lỗi:", status, error); // Ghi lỗi vào console
-    //                 alert("Không thể tải danh sách nhân viên."); // Thông báo lỗi
-    //             }
-    //         });
-    //     });
-
-
         // Hiển thị danh sách nhân viên khi nhấn vào nút show-account
         $(".show-account").click(function (e) {
             e.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
             $.get('@Url.Action("ShowAllEmp", "Home")', function (data) {
                 $('#ShowAllEmp').html(data).show(); // Cập nhật danh sách nhân viên
-                $('#chart, #CreateUserContainer').hide(); // Ẩn các phần khác
+                $('#chart, #CreateUserContainer').hide();
+                $('#chart, #CreateSupplierContainer').hide();// Ẩn các phần khác
             });
         });
 
         // Tải danh sách nhân viên khi trang được tải
         $.get('@Url.Action("ShowAllEmp", "Home")', function (data) {
             $('#ShowAllEmp').html(data).show(); // Cập nhật danh sách nhân viên
-            $('#chart, #CreateUserContainer').hide(); // Ẩn các phần khác
+            $('#chart, #CreateUserContainer').hide(); 
+            $('#chart, #CreateSupplierContainer').hide();// Ẩn các phần khác
         }).fail(function () {
             alert("Failed to load employees."); // Thông báo lỗi nếu không tải được
         });
@@ -150,7 +124,8 @@
                     });
 
                     $('#chart').show(); // Hiển thị biểu đồ
-                    $('#ShowAllEmp, #CreateUserContainer').hide(); // Ẩn các phần khác
+                    $('#ShowAllEmp, #CreateUserContainer').hide();
+                    $('#chart, #CreateSupplierContainer').hide();// Ẩn các phần khác
                 },
                 error: function (err) {
                     console.log(err); // Ghi lỗi vào console
@@ -182,4 +157,162 @@
             alert("Failed to load the Edit User form."); // Thông báo lỗi nếu không tải được
         });
     }
+    // Function to create a new supplier
+    function createsupplier() {
+        $('#ShowAllEmp').html("").show(); // Clear previous content and show the container
+
+        // Load the Create Supplier form
+        $.get('@Url.Action("InsertSupplier", "Supplier")', function (data) {
+            $('#ShowAllEmp').html(data).show(); // Update with the form content
+        }).fail(function () {
+            alert("Failed to load the Create Supplier form."); // Alert if loading fails
+        });
+    };
+
+</script>
+ *@
+
+    @model WebApplication1.ViewModels.CreateUserViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container" style="margin-left:-80px">
+    <div class="row">
+        <nav class="col-md-3 col-lg-3 d-md-block bg-light sidebar p-0">
+            <div class="position-sticky pt-3">
+                <h2 class="text-primary text-center">Welcome, @ViewBag.Username</h2>
+                <div class="d-grid gap-2">
+                    <a class="btn btn-primary text-start mb-2 show-account" href="#">List Employee</a>
+                    <a class="btn btn-info text-start mb-2" asp-area="" asp-controller="ProductCategory" asp-action="Index">Product Category</a>
+                    <a class="btn btn-success text-start mb-2" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                    <a class="btn btn-dark text-start mb-2" asp-area="" asp-controller="Supplier" asp-action="SupplierPage">Supplier</a>
+                    <a class="btn btn-dark text-start mb-2" asp-area="" asp-controller="Home" asp-action="ProductsExpiringSoon">Products Expiring</a>
+                   <a class="btn btn-dark text-start mb-2" asp-area="" asp-controller="SaleRecord" asp-action="TopSellingProducts">Top</a> 
+                    <input id="showChartButton" value="Show Sales Data" type="button" />
+                </div>
+            </div>
+        </nav>
+
+        <div class="col-md-11 ms-sm-auto col-lg-9 px-md-9 mt-1 pt-1">
+            <div id="chart">
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <canvas id="myChart" style="max-height:430px; max-width:600px"></canvas>
+            </div>
+
+            <div id="ShowAllEmp" style="display: none;"></div>
+            <div id="CreateUserContainer" style="display: none;"></div>
+            <div id="EditUserContainer" style="display: none;"></div>
+            <div id="CreateSupplierContainer" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchButton").click(function () {
+            const searchTerm = $('#searchInput').val().trim();
+
+            if (searchTerm === "") {
+                alert("Vui lòng nhập từ khóa tìm kiếm.");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("Search", "Home")',
+                type: 'GET',
+                data: { keyWord: searchTerm },
+                success: function (data) {
+                    $('#searchResults').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi:", status, error);
+                    alert("Không thể thực hiện tìm kiếm.");
+                }
+            });
+        });
+
+        $(".show-account").click(function (e) {
+            e.preventDefault();
+            loadEmployeeList();
+        });
+
+        $("#showChartButton").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/SaleRecord/GetSaleData",
+                dataType: "json",
+                success: function (data) {
+                    if (!data || data.length === 0) {
+                        alert("Không có dữ liệu doanh thu.");
+                        return;
+                    }
+
+                    var labels = data.map(x => x.ngay);
+                    var values = data.map(x => x.tongDoanhThu);
+                    var ctx = document.getElementById('myChart').getContext('2d');
+
+                    if (window.myChart instanceof Chart) {
+                        window.myChart.destroy();
+                    }
+
+                    window.myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Doanh thu theo ngày',
+                                data: values,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+
+                    $('#chart').show();
+                    $('#ShowAllEmp, #CreateUserContainer, #CreateSupplierContainer').hide();
+                },
+
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+    });
+
+    function loadEmployeeList() {
+        $.get('@Url.Action("ShowAllEmp", "Home")', function (data) {
+            $('#ShowAllEmp').html(data).show();
+            $('#chart, #CreateUserContainer, #CreateSupplierContainer').hide();
+        }).fail(function () {
+            alert("Failed to load employees.");
+        });
+    }
+
+    function createuser() {
+        $('#ShowAllEmp').html("").show();
+        $.get('@Url.Action("CreateUser", "Home")', function (data) {
+            $('#ShowAllEmp').html(data).show();
+        }).fail(function () {
+            alert("Failed to load the Create User form.");
+        });
+    }
+
+    function edituser(userId) {
+        $('#ShowAllEmp').html("").show();
+        $.get('@Url.Action("UpdateRole", "Home")', { userId: userId }, function (data) {
+            $('#ShowAllEmp').html(data).show();
+        }).fail(function () {
+            alert("Failed to load the Edit User form.");
+        });
+    }
+
+
 </script>

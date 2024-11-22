@@ -1,63 +1,77 @@
-﻿@using WebApplication1.ViewModels.ProductModels
-@model ProductCategoryViewModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1>Danh Mục Sản Phẩm</h1>
-<form>
-    <div class="form-group">
-        <label for="name">Name</label>
-        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Enter name">
-    </div>
-    <button type="submit" class="btn btn-primary m-2">Search</button>
-    <a asp-action="Insert" class="btn btn-success">Insert</a>
-</form>
-<table class="table table-bordered table-hover">
-    <tr class="table-hover">
-        <th>number</th>
-        <th>Name</th>
-        <th>Action</th>
-    </tr>
-    @if (Model.listCategory != null)
-    {
-        var index = 0;
-        foreach (var item in Model.listCategory)
-        {
-            <tr>
-                <td>@(++index)</td>
-                <td>@item.CategoryName</td>
-                <td>
-                    <a asp-controller="Product" asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-warning" name="id">List Product</a>
-                    <a asp-action="Update" asp-route-id="@item.CategoryId" class="btn btn-primary">Update</a>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_@item.CategoryId">Delete</button>
+﻿@using WebApplication1.ViewModels
+@model WebApplication1.ViewModels.ProductCategoryViewModel
 
-                    <div class="modal fade" id="delete_@item.CategoryId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Caution!</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Do you want to delete @item.CategoryName?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-primary">Yes</a>
+<h1 class="text-center my-4">Product Category</h1>
+
+<form class="d-flex align-items-center mb-4">
+    <div class="form-group col-lg-9 mb-0">
+        <input value="@Model.keyWord" type="text" class="form-control" id="name" name="keyWord" placeholder="Nhập tên danh mục">
+    </div>
+    <button type="submit" class="btn btn-primary ms-2">
+        <i class="bi bi-search"></i> Search
+    </button>
+    <a asp-action="InsertCategory" class="btn btn-success ms-2">
+        <i class="bi bi-plus-circle"></i> Insert
+    </a>
+</form>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+        <tr class="text-center">
+            <th>#</th>
+            <th>Tên Danh Mục</th>
+            <th>Nhân viên đã thêm</th>
+            <th>Hành Động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.listCategory != null && Model.listCategory.Any())
+        {
+            var index = 0;
+            foreach (var item in Model.listCategory)
+            {
+                <tr>
+                    <td class="text-center align-middle">@(++index)</td>
+                    <td class="text-center align-middle">@item.CategoryName</td>
+                    <td class="text-center align-middle">@item.UserId</td>
+                    <td class="text-center align-middle">
+                        <a asp-controller="Product" asp-action="Index" asp-route-id="@item.CategoryId" class="btn btn-warning btn-sm me-1">
+                            <i class="bi bi-box-arrow-right"></i> List Product
+                        </a>
+                        <a asp-action="Update" asp-route-id="@item.CategoryId" class="btn btn-primary btn-sm me-1">
+                            <i class="bi bi-pencil-square"></i> Update
+                        </a>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_@item.CategoryId">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete_@item.CategoryId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="exampleModalLabel">Caution!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Bạn có chắc chắn muốn xóa <strong>@item.CategoryName</strong> không?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                        <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger">Xóa</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center text-muted">Không có dữ liệu</td>
             </tr>
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="4">No data</td>
-        </tr>
-    }
+    </tbody>
 </table>

@@ -319,6 +319,30 @@ namespace WebApplication1.Migrations
                     b.ToTable("Suppliers");
                 });
 
+            modelBuilder.Entity("WebApplication1.Models.TopSellingProduct", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Revenue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalQuantitySold")
+                        .HasColumnType("int");
+
+                    b.ToTable("TopSellingProducts");
+                });
+
             modelBuilder.Entity("WebApplication1.Models.User", b =>
                 {
                     b.Property<int>("UserId")
